@@ -1,0 +1,55 @@
+1. пройтись по всем строкам в файле с озвучкой,
+записать в список audio все значения из файла,
+пройтись по всем строкам в файле с предложениями,
+парсим строку, создаем переменную x
+если певый элемент строки (id), содержится в списке audio, то x = true, иначе x = false
+записываем в файл SentencesWithAdudio.csv:
+"id","lang","text","audio" 
+
+
+2. пройтись по всем строкам в файле SentencesWithAdudio.csv,
+парсим строку, 
+если второй элемент = "eng", то записываем в файл engSentences.csv:
+"id","lang","text","audio" 
+если второй элемент = "rus", то записываем в файл rusSentences.csv:
+"id","lang","text","audio" 
+
+
+
+//избавляемся от повторов
+3. Проходим по файлу engSentences.csv
+парсим строку, 
+
+если 4-я колонка audio = true, то записываем в Hashmap with_audio "id" => "id, eng, text, audio"
+создаем переменную tmp и записываем в нее предложение (3-ю колонку) в переведенную в нижний регистр и убираем знаки припинания
+
+записываем в HashMap tmp "tmp"=> "id, eng, text, audio"
+
+проходим по HashMap tmp
+парсим value 
+записываем в HashMap tmp2 "id"=>"id, eng, text, audio"
+проходим по HashMap with_audio 
+tmp2[i] = with_audio[i]
+
+проходим по HashMap tmp2
+записываем value в файл engSentences.csv
+
+
+
+4. Проходим по файлу engSentences.csv
+парсим строку, 
+записываем в HashMap engSentences id => "все остальное"
+
+Проходим по файлу rusSentences.csv
+парсим строку, 
+записываем в HashMap rusSentences id => "все остальное"
+
+Проходим по файлу links.csv
+парсим строку,
+если id1 содержится в HashMap engSentences && id2 содержится в HashMap rusSentences, 
+то записываем в файл engRuslinks.csv "id1","id2"
+
+
+
+
+

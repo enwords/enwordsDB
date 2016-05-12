@@ -14,31 +14,32 @@ public class Main {
     static String secondLang = "rus";
     static File sentencesWithAudioIn = new File(devDir + "/sentences_with_audio.csv");
     static File sentences = new File(devDir + "/sentences.csv");
-    static File sentencesWithAudioOut = new File(devDir +"/tmp"+ "/SentencesWithAudio.csv");
+    static File sentencesWithAudioOut = new File(devDir + "/tmp" + "/sentencesWithAudio.txt");
 
-    static File langSentencesTmp = new File(devDir + "/tmp/" + lang + "SentencesTmp.csv");
-    static File langSentences = new File(devDir + "/out/" + lang + "Sentences.csv");
+    static File langSentencesTmp = new File(devDir + "/tmp/" + lang + "SentencesTmp.txt");
+    static File langSentences = new File(devDir + "/out/" + lang + "Sentences.txt");
 
-    static File secondLangSentences = new File(devDir + "/out/" + secondLang + "Sentences.csv");
+    static File secondLangSentences = new File(devDir + "/out/" + secondLang + "Sentences.txt");
 //    static File secondLangSentences = new File(devDir + "/" + secondLang + "Sentences.csv");
 
     static File originalLinks = new File(devDir + "/links.csv");
-    static File links = new File(devDir + "/out/" + lang + secondLang + "Links.csv");
+    static File links = new File(devDir + "/out/" + lang + secondLang + "Links.txt");
 
-    static File langWords = new File(devDir + "/out/" + lang + "Words.csv");
-    static File langWordsTmp = new File(devDir + "/tmp/" + lang + "WordsTmp.csv");
+    static File langWords = new File(devDir + "/out/" + lang + "Words.txt");
+    static File langWordsTmp = new File(devDir + "/tmp/" + lang + "WordsTmp.txt");
 
-    static File wordSentenceLinks = new File(devDir + "/out/" + lang + "WordSentenceLinks.csv");
+    static File wordSentenceLinks = new File(devDir + "/out/" + lang + "WordSentenceLinks.txt");
 
     public static void main(String[] args) throws IOException {
         Main main = new Main();
         main.makeDir();
-        main.first(sentencesWithAudioOut, sentencesWithAudioIn);
 
-        main.second(sentencesWithAudioOut, langSentencesTmp, lang);
-        main.second(sentencesWithAudioOut, secondLangSentences, secondLang);
+        main.second(sentences, langSentencesTmp, lang);
+        main.second(sentences, secondLangSentences, secondLang);
 
-        main.third(langSentencesTmp, langSentences);
+        main.first(langSentencesTmp, sentencesWithAudioIn, sentencesWithAudioOut);
+
+        main.third(sentencesWithAudioOut, langSentences);
         main.fourth(langSentences, secondLangSentences, originalLinks, links);
 
         main.fifth(langSentences, langWords, langWordsTmp);
@@ -47,7 +48,7 @@ public class Main {
 
     /**
      * Get file with links of id of words and id of sentence with the word
-     * */
+     */
     private void sixth(File langWords, File langSentences, File wordSentenceLinks) throws IOException {
         Sixth sixth = new Sixth();
         sixth.start(langWords, langSentences, wordSentenceLinks);
@@ -55,10 +56,10 @@ public class Main {
 
     /**
      * Word counting
-     * */
+     */
     private void fifth(File langSentences, File langWords, File langWordsTmp) throws IOException {
         Fifth fifth = new Fifth();
-        fifth.start(langSentences, langWords, langWordsTmp );
+        fifth.start(langSentences, langWords, langWordsTmp);
     }
 
     /**
@@ -88,7 +89,7 @@ public class Main {
     /**
      * Get file of sentences with audio column
      */
-    private void first(File sentencesWithAudioOut, File sentencesWithAudioIn) throws IOException {
+    private void first(File sentences, File sentencesWithAudioIn, File sentencesWithAudioOut) throws IOException {
         First first = new First();
         first.writeListAudioToFile(sentencesWithAudioOut, first.fileToList(sentencesWithAudioIn), first.fileToList(sentences));
     }

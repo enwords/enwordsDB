@@ -1,7 +1,5 @@
 package development.subclasses;
 
-import development.Zero;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,7 +37,7 @@ public class Third extends Zero {
     private void splitList(List<String> list) throws IOException {
         for (String sentence : list) {
             List<String> splitSen = parseLine(sentence);
-            if (splitSen.get(3).equals("true")) {
+            if (splitSen.size()>3 && splitSen.get(3).equals("true")) {
                 listSentencesWithAudio.add(sentence);
             }
             listSentences.add(sentence);

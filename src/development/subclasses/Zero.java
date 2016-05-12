@@ -74,9 +74,16 @@ public class Zero {
     public Set<String> conditions(String[] words) {
         Set<String> set = new HashSet<>();
 
+//        for (String word : words) {
+//            if (((word.length() > 1) || "i".equals(word)) && !word.startsWith("'")
+//                    && (!"the".equals(word) && !"tom".equals(word) && !"mary".equals(word)
+//                    && !word.startsWith("tom'") && !word.startsWith("mary'"))) {
+//                set.add(word);
+//            }
+//        }
         for (String word : words) {
             if (((word.length() > 1) || "i".equals(word)) && !word.startsWith("'")
-                    && (!"the".equals(word) && !"tom".equals(word) && !"mary".equals(word)
+                    && (!"tom".equals(word) && !"mary".equals(word)
                     && !word.startsWith("tom'") && !word.startsWith("mary'"))) {
                 set.add(word);
             }

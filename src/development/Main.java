@@ -7,43 +7,83 @@ import java.io.IOException;
 
 public class Main {
 
-    static String devDir = "src/development/test";
-
     public static String separator = "\t";
-    static String lang = "eng";
-    static String secondLang = "rus";
-    static File sentencesWithAudioIn = new File(devDir + "/sentences_with_audio.csv");
-    static File sentences = new File(devDir + "/sentences.csv");
-    static File sentencesWithAudioOut = new File(devDir + "/tmp" + "/sentencesWithAudio.txt");
-
-    static File langSentencesTmp = new File(devDir + "/tmp/" + lang + "SentencesTmp.txt");
-    static File langSentences = new File(devDir + "/out/" + lang + "Sentences.txt");
-
-    static File secondLangSentences = new File(devDir + "/out/" + secondLang + "Sentences.txt");
-//    static File secondLangSentences = new File(devDir + "/" + secondLang + "Sentences.csv");
-
-    static File originalLinks = new File(devDir + "/links.csv");
-    static File links = new File(devDir + "/out/" + lang + secondLang + "Links.txt");
-
-    static File langWords = new File(devDir + "/out/" + lang + "Words.txt");
-    static File langWordsTmp = new File(devDir + "/tmp/" + lang + "WordsTmp.txt");
-
-    static File wordSentenceLinks = new File(devDir + "/out/" + lang + "WordSentenceLinks.txt");
 
     public static void main(String[] args) throws IOException {
         Main main = new Main();
-        main.makeDir();
+        main.start();
+    }
 
-        main.second(sentences, langSentencesTmp, lang);
-        main.second(sentences, secondLangSentences, secondLang);
+    private void start() throws IOException {
 
-        main.first(langSentencesTmp, sentencesWithAudioIn, sentencesWithAudioOut);
+        String devDir = "src/development/files";
+        String lang = "eng";
+        String secondLang = "rus";
 
-        main.third(sentencesWithAudioOut, langSentences);
-        main.fourth(langSentences, secondLangSentences, originalLinks, links);
 
-        main.fifth(langSentences, langWords, langWordsTmp);
-        main.sixth(langWords, langSentences, wordSentenceLinks);
+        File sentencesWithAudioIn = new File(devDir + "/sentences_with_audio.csv");
+        File sentences = new File(devDir + "/sentences.csv");
+        File sentencesWithAudioOut = new File(devDir + "/tmp" + "/sentencesWithAudio.txt");
+        File langSentencesTmp = new File(devDir + "/tmp/" + lang + "SentencesTmp.txt");
+        File langSentences = new File(devDir + "/out/" + lang + "Sentences.txt");
+
+        File secondLangSentences = new File(devDir + "/out/" + secondLang + "Sentences.txt");
+        File originalLinks = new File(devDir + "/links.csv");
+        File links = new File(devDir + "/out/" + lang + secondLang + "Links.txt");
+
+        File langWords = new File(devDir + "/out/" + lang + "Words.txt");
+        File langWordsTmp = new File(devDir + "/tmp/" + lang + "WordsTmp.txt");
+
+        File wordSentenceLinks = new File(devDir + "/out/" + lang + "WordSentenceLinks.txt");
+
+        long startTime, endTime, duration;
+
+        makeDir(devDir);
+
+        startTime = System.nanoTime();
+        second(sentences, langSentencesTmp, lang);
+        second(sentences, secondLangSentences, secondLang);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / 60000000000L;
+        System.out.println("first is ready " + duration + " min");
+
+        startTime = System.nanoTime();
+        first(langSentencesTmp, sentencesWithAudioIn, sentencesWithAudioOut);
+
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / 60000000000L;
+        System.out.println("second is ready " + duration + " min");
+
+        startTime = System.nanoTime();
+        third(sentencesWithAudioOut, langSentences);
+
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / 60000000000L;
+        System.out.println("third is ready " + duration + " min");
+
+        startTime = System.nanoTime();
+        fourth(langSentences, secondLangSentences, originalLinks, links);
+
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / 60000000000L;
+        System.out.println("fourth is ready " + duration + " min");
+
+        startTime = System.nanoTime();
+        fifth(langSentences, langWords, langWordsTmp);
+
+
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / 60000000000L;
+        System.out.println("fifth is ready " + duration + " min");
+
+        startTime = System.nanoTime();
+        sixth(langWords, langSentences, wordSentenceLinks);
+
+
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / 60000000000L;
+        System.out.println("sixth is ready " + duration + " min");
+
     }
 
     /**
@@ -94,7 +134,7 @@ public class Main {
         first.writeListAudioToFile(sentencesWithAudioOut, first.fileToList(sentencesWithAudioIn), first.fileToList(sentences));
     }
 
-    private void makeDir() {
+    private void makeDir(String devDir) {
         File dir1 = new File(devDir + "/tmp");
         File dir2 = new File(devDir + "/out");
         dir1.mkdir();

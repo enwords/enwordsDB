@@ -16,8 +16,8 @@ public class Main {
 
     private void start() throws IOException {
 
-//        String devDir = "src/development/files";
-        String devDir = "src/test/files";
+        String devDir = "src/development/files";
+//        String devDir = "src/test/files";
         String lang = "eng";
         String secondLang = "rus";
 
@@ -51,46 +51,36 @@ public class Main {
         startTime = System.nanoTime();
         first(engLangSentencesTmp, sentencesWithAudioIn, engSentencesWithAudioOut);
         first(rusLangSentencesTmp, sentencesWithAudioIn, rusSentencesWithAudioOut);
-
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("second is ready " + duration + " min");
 
         startTime = System.nanoTime();
         third(engSentencesWithAudioOut, engSentencesWithAudioOutWithoutRepeat);
-
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("third is ready " + duration + " min");
 
         startTime = System.nanoTime();
         fourth(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, originalLinks, links);
-
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("fourth is ready " + duration + " min");
 
         startTime = System.nanoTime();
         fifth(engSentencesWithAudioOutWithoutRepeat, langWords, langWordsTmp);
-
-
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("fifth is ready " + duration + " min");
 
         startTime = System.nanoTime();
         sixth(langWords, engSentencesWithAudioOutWithoutRepeat, wordSentenceLinks);
-
-
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("sixth is ready " + duration + " min");
 
-
         startTime = System.nanoTime();
         seventh(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, links, engrusSentences);
-
-
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("sixth is ready " + duration + " min");

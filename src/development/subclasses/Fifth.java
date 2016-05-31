@@ -55,25 +55,23 @@ public class Fifth extends Zero {
 
 
     public void writeToFile(List<String> list, File langWords, File langWordsTmp) throws IOException {
-        //запись в файл
 
-        try ( PrintWriter printWriter = new PrintWriter(langWords);
-              PrintWriter printWriter2 = new PrintWriter(langWordsTmp)){
+        try (PrintWriter printWriter = new PrintWriter(langWords);
+             PrintWriter printWriter2 = new PrintWriter(langWordsTmp)) {
             int idCount = 0;
             String sep = Main.separator;
             for (Object s : list) {
                 String[] wordAndCount = s.toString().split("=");
                 String word = wordAndCount[0];
                 String count = wordAndCount[1];
-
-                if (!(word.length() <= 3 && "1".equals(count)) && !(word.length() <= 2 && Integer.parseInt(count) <= 3)) {
+                if ("1".equals(count) || (word.length() <= 3 && Integer.parseInt(count) < 3)) {
+                    break;
+                } else {
                     idCount++;
                     printWriter.println(idCount + sep + word);
-
                     printWriter2.println(idCount + sep + word + sep + count);
                 }
             }
-
         }
     }
 }

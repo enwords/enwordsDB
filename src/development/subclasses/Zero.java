@@ -83,7 +83,7 @@ public class Zero {
 //        }
         for (String word : words) {
             if (((word.length() > 1) || "i".equals(word)) && !word.startsWith("'")
-                    && (!"tom".equals(word) && !"mary".equals(word)
+                    && (!"tom".equals(word) && !"mary".equals(word) && !"tatoeba".equals(word) && !"th".equals(word)
                     && !word.startsWith("tom'") && !word.startsWith("mary'"))) {
                 set.add(word);
             }
@@ -91,9 +91,7 @@ public class Zero {
         return set;
     }
 
-    /**
-     * delete bad words for english
-     */
+
     public String removePunctuationAndDigits(String word) {
         return word.replaceAll("(?!')\\W+", " ").replaceAll("\\p{Digit}+", " ").toLowerCase();
     }

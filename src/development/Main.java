@@ -38,52 +38,56 @@ public class Main {
         File wordSentenceLinks = new File(devDir + "/out/" + lang + "WordSentenceLinks.txt");
         File engrusSentences = new File(devDir + "/out/" + lang+ secondLang + "Sentences.txt");
 
-        makeDir(devDir);
+
         long startTime, endTime, duration;
         long l = 60000000000L;
-        startTime = System.nanoTime();
-        second(sentences, engLangSentencesTmp, lang);
-        second(sentences, rusLangSentencesTmp, secondLang);
-        endTime = System.nanoTime();
-        duration = (endTime - startTime) / l;
-        System.out.println("first is ready " + duration + " min");
-
-        startTime = System.nanoTime();
-        first(engLangSentencesTmp, sentencesWithAudioIn, engSentencesWithAudioOut);
-        first(rusLangSentencesTmp, sentencesWithAudioIn, rusSentencesWithAudioOut);
-        endTime = System.nanoTime();
-        duration = (endTime - startTime) / l;
-        System.out.println("second is ready " + duration + " min");
-
-        startTime = System.nanoTime();
-        third(engSentencesWithAudioOut, engSentencesWithAudioOutWithoutRepeat);
-        endTime = System.nanoTime();
-        duration = (endTime - startTime) / l;
-        System.out.println("third is ready " + duration + " min");
-
-        startTime = System.nanoTime();
-        fourth(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, originalLinks, links);
-        endTime = System.nanoTime();
-        duration = (endTime - startTime) / l;
-        System.out.println("fourth is ready " + duration + " min");
-
-        startTime = System.nanoTime();
-        fifth(engSentencesWithAudioOutWithoutRepeat, langWords, langWordsTmp);
-        endTime = System.nanoTime();
-        duration = (endTime - startTime) / l;
-        System.out.println("fifth is ready " + duration + " min");
-
-        startTime = System.nanoTime();
-        sixth(langWords, engSentencesWithAudioOutWithoutRepeat, wordSentenceLinks);
-        endTime = System.nanoTime();
-        duration = (endTime - startTime) / l;
-        System.out.println("sixth is ready " + duration + " min");
+//        makeDir(devDir);
+//        startTime = System.nanoTime();
+//        second(sentences, engLangSentencesTmp, lang);
+//        second(sentences, rusLangSentencesTmp, secondLang);
+//        endTime = System.nanoTime();
+//        duration = (endTime - startTime) / l;
+//        System.out.println("first is ready " + duration + " min");
+//
+//        //TODO too slow..(46 min)
+//        startTime = System.nanoTime();
+//        first(engLangSentencesTmp, sentencesWithAudioIn, engSentencesWithAudioOut);
+//        first(rusLangSentencesTmp, sentencesWithAudioIn, rusSentencesWithAudioOut);
+//        endTime = System.nanoTime();
+//        duration = (endTime - startTime) / l;
+//        System.out.println("second is ready " + duration + " min");
+//
+//        startTime = System.nanoTime();
+//        third(engSentencesWithAudioOut, engSentencesWithAudioOutWithoutRepeat);
+//        endTime = System.nanoTime();
+//        duration = (endTime - startTime) / l;
+//        System.out.println("third is ready " + duration + " min");
+//
+//        startTime = System.nanoTime();
+//        fourth(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, originalLinks, links);
+//        endTime = System.nanoTime();
+//        duration = (endTime - startTime) / l;
+//        System.out.println("fourth is ready " + duration + " min");
+//
+//        startTime = System.nanoTime();
+//        fifth(engSentencesWithAudioOutWithoutRepeat, langWords, langWordsTmp);
+//        endTime = System.nanoTime();
+//        duration = (endTime - startTime) / l;
+//        System.out.println("fifth is ready " + duration + " min");
 
         startTime = System.nanoTime();
         seventh(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, links, engrusSentences);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("sixth is ready " + duration + " min");
+
+        startTime = System.nanoTime();
+        sixth(langWords, engSentencesWithAudioOutWithoutRepeat, wordSentenceLinks);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / l;
+        System.out.println("seventh is ready " + duration + " min");
+
+
     }
 
     /**

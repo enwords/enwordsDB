@@ -1,52 +1,92 @@
 package development.subclasses;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import development.Main;
+
+import java.io.*;
+import java.util.*;
 
 public class Seventh extends Zero {
-    public void start(File engSentencesWithAudioOutWithoutRepeat, File rusSentencesWithAudioOut, File links, File engrusSentences) throws IOException {
-        List<String> engList = fileToList(engSentencesWithAudioOutWithoutRepeat);
-        List<String> rusList = fileToList(rusSentencesWithAudioOut);
-        List<String> linksList = linksToList(links);
 
-        List<String> filteredRusList = filter(rusList, linksList);
 
-        List<String> newList = new LinkedList<>(engList);
-        newList.addAll(filteredRusList);
-        listToFile(newList, engrusSentences);
+    public void start(File langWordsFile, File langSentencesFile, File outFile) throws IOException {
+        List<String> listOfWords = fileWordsToArrayList(langWordsFile);
+        List<String> listOfSentences = fileToList(langSentencesFile);
+
+        Map<Integer, String> map = listOfWordsAndListOfSentencesToMap(listOfWords, listOfSentences);
+        writeMapToFile(map, outFile);
     }
 
-    public List<String> filter(List<String> rusList, List<String> linksList) throws IOException {
-        List<String> result = new LinkedList<>();
+    private Set strToSet(String string) {
+        String[] arr = string.split(":");
+        Set<String> set = new TreeSet<>(Arrays.asList(arr));
+        return set;
+    }
 
 
-        for (String string : rusList) {
-            List<String> list = parseLine(string);
+    private Map<Integer, String> listOfWordsAndListOfSentencesToMap(List<String> listOfWords, List<String> listOfSentences) throws IOException {
 
-            if (linksList.contains(list.get(0))) {
-                result.add(string);
+        Map<Integer, String> res = new TreeMap<>();
+
+        for (String st : listOfSentences) {
+            List<String> arr = parseLine(st);
+            String id = arr.get(0);
+//            String lang = arr.get(1);
+            String text = arr.get(2);
+
+            String [] splitText = removePunctuationAndDigits(text).split(" ");
+
+            for (String s2 : splitText) {
+
+                if (listOfWords.contains(s2)) {
+
+                    Integer wordId = listOfWords.indexOf(s2) + 1;
+                   // String wordIdStr = wordId.toString();
+
+                    if (res.containsKey(wordId)) {
+                        res.put(wordId, res.get(wordId) + ":" + id);
+                    } else res.put(wordId, id);
+                }
             }
         }
-        return result;
+        return res;
     }
 
 
-    public List<String> linksToList(File file) throws IOException {
+    public List<String> fileWordsToArrayList(File file) throws IOException {
         List<String> result = new ArrayList<>();
 
         try (BufferedReader fileReader = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
             String line;
             while (fileReader.ready()) {
                 line = fileReader.readLine();
-                List<String> list = parseLine(line);
-                result.addAll(list);
+
+                result.add(line.split("\\t")[1]);
             }
         }
         return result;
+    }
+
+
+    private void writeMapToFile(Map<Integer, String> map, File outFile) throws FileNotFoundException, UnsupportedEncodingException {
+        try (PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(outFile, false), "UTF-8"))) {
+            for (Map.Entry<Integer, String> pair : map.entrySet()) {
+
+                int key = pair.getKey();
+                String value = pair.getValue();
+                Set<String> set = strToSet(value);
+
+                int count = 0;
+
+                //TODO max amount of sentences linked with words = 100!!
+                for (String s : set) {
+                    if (count > 100) {
+                        break;
+                    } else {
+                        printWriter.println(key + Main.separator + s);
+                        count++;
+                    }
+                }
+            }
+        }
     }
 }

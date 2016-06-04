@@ -7,24 +7,39 @@ import java.util.*;
 
 public class Zero {
 
+    public <T> Set<T> fileToSet(File file) throws IOException {
+        Set<T> result = new HashSet<>();
+
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
+            String line;
+            while (fileReader.ready()) {
+                line = fileReader.readLine();
+//                String[] list = parseLineLight(line);
+
+
+//                for (String s : list) {
+//                    result.add((T) s);
+//                }
+                result.add((T) line);
+
+            }
+        }
+        return result;
+    }
+
+
     public void listToFile(List<String> list, File file) throws IOException {
-
-//        try (PrintWriter printWriter = new PrintWriter(file)) {
-//
-//            String result = "";
-//
-//            for (String string : list) {
-//                result += (string + sep);
-//            }
-//            printWriter.println(result.substring(0, result.length()-1));
-//        }
-
         try (PrintWriter printWriter = new PrintWriter(file)) {
 
             for (String sentence : list) {
                 printWriter.println(sentence);
             }
         }
+    }
+
+    public String[] parseLineLight(String line) {
+        String[] list = line.split(Main.separator);
+        return list;
     }
 
     public List<String> parseLine(String line) throws IOException {

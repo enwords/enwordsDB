@@ -45,8 +45,6 @@ public class Seventh extends Zero {
         for (String line : engrusLinks) {
             list = parseLineLight(line);
 
-
-
             if (linksSet.contains(list[0])) {
 
                 result.add(Integer.parseInt(list[0]));

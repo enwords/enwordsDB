@@ -9,12 +9,12 @@ import java.util.*;
 
 public class Fifth extends Zero {
 
-    public void start(File langSentences, File langWords, File langWordsTmp) throws IOException {
+    public void start(File langSentences, File langWordsTmp) throws IOException {
         List<String> listOfSentences = fileToList(langSentences);
 
         List<String> listOfWords = wordCount(listOfSentences);
 
-        writeToFile(listOfWords, langWords, langWordsTmp );
+        writeToFile(listOfWords, langWordsTmp );
     }
 
     public List<String> wordCount(List<String> list) throws IOException {
@@ -54,10 +54,10 @@ public class Fifth extends Zero {
     }
 
 
-    public void writeToFile(List<String> list, File langWords, File langWordsTmp) throws IOException {
+    public void writeToFile(List<String> list, File langWordsTmp) throws IOException {
 
-        try (PrintWriter printWriter = new PrintWriter(langWords);
-             PrintWriter printWriter2 = new PrintWriter(langWordsTmp)) {
+//        try (PrintWriter printWriter = new PrintWriter(langWords);
+        try (PrintWriter printWriter2 = new PrintWriter(langWordsTmp)) {
             int idCount = 0;
             String sep = Main.separator;
             for (Object s : list) {
@@ -68,7 +68,7 @@ public class Fifth extends Zero {
                     break;
                 } else {
                     idCount++;
-                    printWriter.println(idCount + sep + word);
+//                    printWriter.println(idCount + sep + word);
                     printWriter2.println(idCount + sep + word + sep + count);
                 }
             }

@@ -14,8 +14,6 @@ public class Sixth extends Zero {
         List<String> listOfWords = fileWordsToArrayList(langWordsFile);
         List<String> listOfSentences = fileToList(langSentencesFile);
 
-//        Map<Integer, String> mapWithAudio = listOfWordsAndListOfSentencesToMap(listOfWords, listOfSentences, true);
-//        Map<Integer, String> mapWithoutAudio = listOfWordsAndListOfSentencesToMap(listOfWords, listOfSentences, false);
         mapWithAudio = new TreeMap<>();
         mapWithoutAudio = new TreeMap<>();
         listOfWordsAndListOfSentencesToMap(listOfWords, listOfSentences);

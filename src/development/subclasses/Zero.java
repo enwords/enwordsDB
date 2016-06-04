@@ -14,12 +14,6 @@ public class Zero {
             String line;
             while (fileReader.ready()) {
                 line = fileReader.readLine();
-//                String[] list = parseLineLight(line);
-
-
-//                for (String s : list) {
-//                    result.add((T) s);
-//                }
                 result.add((T) line);
 
             }
@@ -76,8 +70,8 @@ public class Zero {
     public Map<String, String> listToMap(List<String> list) throws IOException {
         Map<String, String> map = new LinkedHashMap<>();
         for (String sentence : list) {
-            List<String> splitSen = parseLine(sentence);
-            map.put(splitSen.get(0), sentence);
+            String[] splitSen = parseLineLight(sentence);
+            map.put(splitSen[0], sentence);
         }
 
         return map;

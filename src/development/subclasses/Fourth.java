@@ -7,21 +7,22 @@ import java.util.List;
 import java.util.Map;
 
 public class Fourth extends Zero {
-    public void start(File file, File file2, File file3, File file4) throws IOException {
+    public void start(File langSentences, File secondLangSentences, File originalLinks, File links) throws IOException {
 
-        Map<String, String> firstMap = listToMap(fileToList(file));
-        Map<String, String> secondMap = listToMap(fileToList(file2));
-        List<String> list = fileToList(file3);
+        Map<String, String> engMap = listToMap(fileToList(langSentences));
+        Map<String, String> rusMap = listToMap(fileToList(secondLangSentences));
+        List<String> list = fileToList(originalLinks);
 
         List<String> result = new ArrayList<>();
 
         for (String string : list) {
-            List<String> parsedString = parseLine(string);
-            if (firstMap.containsKey(parsedString.get(0)) && secondMap.containsKey(parsedString.get(1))) {
+            String[] parsedString = parseLineLight(string);
+
+            if (engMap.containsKey(parsedString[0]) && rusMap.containsKey(parsedString[1])) {
                 result.add(string);
             }
         }
 
-        listToFile(result, file4);
+        listToFile(result, links);
     }
 }

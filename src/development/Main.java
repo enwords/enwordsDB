@@ -33,10 +33,11 @@ public class Main {
         File engSentencesWithAudioOutWithoutRepeat = new File(devDir + "/tmp/" + lang + "SentencesWithAudioWithoutRepeat.txt");
         File langWordsTmp = new File(devDir + "/tmp/" + lang + "WordsTmp.txt");
 
-        File links = new File(devDir + "/out/" + lang + secondLang + "Links.txt");
+        File engRusSentencesLinks = new File(devDir + "/out/" + lang + secondLang + "SentencesLinks.txt");
         File langWords = new File(devDir + "/out/" + lang + "Words.txt");
         File wordSentenceLinks = new File(devDir + "/out/" + lang + "WordSentenceLinks.txt");
-        File engrusSentences = new File(devDir + "/out/" + lang+ secondLang + "Sentences.txt");
+        File engSentences = new File(devDir + "/out/" + lang + "Sentences.txt");
+        File rusSentences = new File(devDir + "/out/" + secondLang+ "Sentences.txt");
 
 
         long startTime, endTime, duration;
@@ -64,7 +65,7 @@ public class Main {
         System.out.println("third is ready " + duration + " min");
 
         startTime = System.nanoTime();
-        fourth(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, originalLinks, links);
+        fourth(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, originalLinks, engRusSentencesLinks);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("fourth is ready " + duration + " min");
@@ -74,37 +75,36 @@ public class Main {
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("fifth is ready " + duration + " min");
-        //TODO too slow..35min
-        startTime = System.nanoTime();
-        sixth(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, links, engrusSentences);
-        endTime = System.nanoTime();
-        duration = (endTime - startTime) / l;
-        System.out.println("sixth is ready " + duration + " min");
 
         //TODO too slow..42min
         startTime = System.nanoTime();
-        seventh(langWords, engSentencesWithAudioOutWithoutRepeat, wordSentenceLinks);
+        sixth(langWords, engSentencesWithAudioOutWithoutRepeat, wordSentenceLinks);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / l;
+        System.out.println("sixth is ready " + duration + " min");
+        //TODO too slow..35min
+        startTime = System.nanoTime();
+        seventh(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, wordSentenceLinks, engRusSentencesLinks, engSentences, rusSentences);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("seventh is ready " + duration + " min");
-
 
     }
 
     /**
      * Get file with union rus and eng sentences
      */
-    private void sixth(File engSentencesWithAudioOutWithoutRepeat, File rusSentencesWithAudioOut, File links, File engrusSentences) throws IOException {
-        Sixth sixth = new Sixth();
-        sixth.start(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, links, engrusSentences);
+    private void seventh(File engSentencesWithAudioOutWithoutRepeat, File rusSentencesWithAudioOut, File wordSentenceLinks, File  engrusLinks, File engSentences, File rusSentences) throws IOException {
+        Seventh x = new Seventh();
+        x.start(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, wordSentenceLinks, engrusLinks, engSentences, rusSentences);
     }
 
     /**
      * Get file with links of id of words and id of sentence with the word
      */
-    private void seventh(File langWords, File langSentences, File wordSentenceLinks) throws IOException {
-        Seventh seventh = new Seventh();
-        seventh.start(langWords, langSentences, wordSentenceLinks);
+    private void sixth(File langWords, File langSentences, File wordSentenceLinks) throws IOException {
+        Sixth x = new Sixth();
+        x.start(langWords, langSentences, wordSentenceLinks);
     }
 
     /**

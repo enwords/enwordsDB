@@ -1,50 +1,79 @@
 package development.subclasses;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import development.Main;
+
+import java.io.*;
+import java.util.*;
 
 public class Sixth extends Zero {
-    public void start(File engSentencesWithAudioOutWithoutRepeat, File rusSentencesWithAudioOut, File links, File engrusSentences) throws IOException {
+    public void start(File engSentencesWithAudioOutWithoutRepeat, File rusSentencesWithAudioOut, File wordSentenceLinks,
+                      File engrusLinks, File engSentences, File rusSentences) throws IOException {
+
         List<String> engList = fileToList(engSentencesWithAudioOutWithoutRepeat);
         List<String> rusList = fileToList(rusSentencesWithAudioOut);
-        List<String> linksList = linksToList(links);
 
-        List<String> filteredRusList = filter(rusList, linksList);
+        Map<Integer, String> mapEngSen = listToMapWithFilter(engList);
+        Map<Integer, String> mapRusSen = listToMapWithFilter(rusList);
+        List<String> linksList = linksToList(wordSentenceLinks);
+        List<String> engrusLinksList = engrusLinksListToList(engrusLinks, linksList);
 
-        List<String> newList = new LinkedList<>(engList);
-        newList.addAll(filteredRusList);
-        listToFile(newList, engrusSentences);
+        List<String> listE = mapToList(mapEngSen, engrusLinksList);
+        List<String> listR = mapToList(mapRusSen, engrusLinksList);
+
+        listToFile(listE, engSentences);
+        listToFile(listR, rusSentences);
+
     }
 
-    public List<String> filter(List<String> rusList, List<String> linksList) throws IOException {
+    private List<String> mapToList(Map<Integer, String> mapEngSen, List<String> engrusLinksList) {
         List<String> result = new LinkedList<>();
 
+        for (Map.Entry<Integer, String> pair : mapEngSen.entrySet()) {
+            Integer key = pair.getKey();
+            String value = pair.getValue();
 
-        for (String string : rusList) {
-            List<String> list = parseLine(string);
+            if (engrusLinksList.contains(key.toString())) {
+                result.add(value);
+            }
+        }
+        return result;
+    }
 
-            if (linksList.contains(list.get(0))) {
-                result.add(string);
+    private List<String> engrusLinksListToList(File engrusLinks, List<String> linksList) throws IOException {
+        List<String> result = new LinkedList<>();
+
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(engrusLinks.getAbsolutePath()))) {
+            String line;
+            while (fileReader.ready()) {
+                line = fileReader.readLine();
+                List<String> list = parseLine(line);
+                if (linksList.contains(list.get(0))) result.addAll(list);
             }
         }
         return result;
     }
 
 
-    public List<String> linksToList(File file) throws IOException {
-        List<String> result = new ArrayList<>();
+    private Map<Integer, String> listToMapWithFilter(List<String> list) throws IOException {
+        Map<Integer, String> res = new TreeMap<>();
+
+        for (String line : list) {
+            List<String> parseList = parseLine(line);
+            res.put(Integer.parseInt(parseList.get(0)), parseList.get(0) + Main.separator + parseList.get(2) + Main.separator + parseList.get(3));
+        }
+        return res;
+    }
+
+
+    private List<String> linksToList(File file) throws IOException {
+        List<String> result = new LinkedList<>();
 
         try (BufferedReader fileReader = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
             String line;
             while (fileReader.ready()) {
                 line = fileReader.readLine();
                 List<String> list = parseLine(line);
-                result.addAll(list);
+                result.add(list.get(1));
             }
         }
         return result;

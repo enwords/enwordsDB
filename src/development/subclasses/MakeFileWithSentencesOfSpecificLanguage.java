@@ -1,29 +1,30 @@
 package development.subclasses;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.List;
 
 public class MakeFileWithSentencesOfSpecificLanguage extends Zero {
 
     public void start(File sentences, File langSentencesTmp, String lang) throws IOException {
-        List<String> sentencesList = fileToList(sentences);
-        listToFile(sentencesList, langSentencesTmp, lang);
+
+        listToFile(sentences, langSentencesTmp, lang);
     }
 
+    public void listToFile(File file, File fileout, String lang) throws IOException {
 
-    public void listToFile(List<String> list, File file, String lang) throws IOException {
-        try (PrintWriter printWriter = new PrintWriter(file)) {
 
-            for (String sentence : list) {
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(file.getAbsolutePath()));
+                PrintWriter printWriter = new PrintWriter(fileout)
+        ) {
+            String line;
+            while (fileReader.ready()) {
+                line = fileReader.readLine();
 
-                String [] splitSen = parseLineLight(sentence);
+                String [] splitSen = parseLineLight(line);
                 if (splitSen[1].equals(lang)) {
-                    printWriter.println(sentence);
+                    printWriter.println(line);
                 }
             }
         }
     }
-
 }

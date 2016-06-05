@@ -33,11 +33,11 @@ public class Main {
         File engSentencesWithAudioOutWithoutRepeat = new File(devDir + "/tmp/" + lang + "SentencesWithAudioWithoutRepeat.txt");
         File langWordsTmp = new File(devDir + "/tmp/" + lang + "WordsTmp.txt");
 
-        File engRusSentencesLinks = new File(devDir + "/out/" + lang + secondLang + "SentencesLinks.txt");
-        File langWords = new File(devDir + "/out/" + lang + "Words.txt");//
-        File wordSentenceLinks = new File(devDir + "/out/" + lang + "WordSentenceLinks.txt");
-        File engSentences = new File(devDir + "/out/" + lang + "Sentences.txt");
-        File rusSentences = new File(devDir + "/out/" + secondLang+ "Sentences.txt");
+        File engRusSentencesLinks = new File(devDir + "/seeds_data/" + lang + secondLang + "SentencesLinks.txt");
+        File langWords = new File(devDir + "/seeds_data/" + lang + "Words.txt");//
+        File wordSentenceLinks = new File(devDir + "/seeds_data/" + lang + "WordSentenceLinks.txt");
+        File engSentences = new File(devDir + "/seeds_data/" + lang + "Sentences.txt");
+        File rusSentences = new File(devDir + "/seeds_data/" + secondLang+ "Sentences.txt");
 
 
         long startTime, endTime, duration;
@@ -157,7 +157,7 @@ public class Main {
 
     private void makeDir(String devDir) {
         File dir1 = new File(devDir + "/tmp");
-        File dir2 = new File(devDir + "/out");
+        File dir2 = new File(devDir + "/seeds_data");
         dir1.mkdir();
         dir2.mkdir();
     }

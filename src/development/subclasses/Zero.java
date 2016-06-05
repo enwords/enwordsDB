@@ -7,6 +7,28 @@ import java.util.*;
 
 public class Zero {
 
+//    public static void main(String[] args) throws IOException {
+//
+//        Zero x = new Zero();
+//        x.tmp();
+//
+//    }
+//
+//    public void tmp() throws IOException {
+//        File jpnWords = new File("/home/sadedv/Documents/repo/jpnWords");
+//        List<String> l = fileToList(jpnWords);
+//        List<String> l2 = new ArrayList<>();
+//
+//        int count = 1;
+//        for (String s : l) {
+//            l2.add(count + "\t" + s);
+//            count++;
+//        }
+//
+//
+//        listToFile(l2, new File("/home/sadedv/Documents/repo/jpnWordsTmp"));
+//    }
+
     public <T> Set<T> fileToSet(File file, int param) throws IOException {
         Set<T> result = new HashSet<>();
 
@@ -97,8 +119,10 @@ public class Zero {
 //                set.add(word);
 //            }
 //        }
+
+
         for (String word : words) {
-            if (((word.length() > 1) || "i".equals(word)) && !word.startsWith("'")
+            if (((word.length() >= Main.minWordLength) || "i".equals(word)) && !word.startsWith("'")
                     && (!"tom".equals(word) && !"mary".equals(word) && !"tatoeba".equals(word) && !"th".equals(word)
                     && !word.startsWith("tom'") && !word.startsWith("mary'"))) {
                 set.add(word);
@@ -110,6 +134,10 @@ public class Zero {
 
     public String removePunctuationAndDigits(String word) {
 //        return word.replaceAll("(?!')\\W+\\p{Digit}+", " ").toLowerCase();
-        return word.replaceAll("(?!')\\W+", " ").replaceAll("\\p{Digit}+", " ").toLowerCase();
+
+            return word.replaceAll("[^'\\p{L}]+", Main.splitSpace).toLowerCase();
+
     }
+
+
 }

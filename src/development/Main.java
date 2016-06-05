@@ -7,7 +7,31 @@ import java.io.IOException;
 
 public class Main {
 
-    public static String separator = "\t";
+
+    /**
+     * OPTIONS
+     */
+    public static String lang = "cnm";
+    public static String secondLang = "rus";
+         String devDir = "src/development/files/";
+//    String devDir = "src/test/files/";
+
+
+    /******/
+
+    /**
+     * DO NO TOUCH!
+     */
+    public static String splitSpace = " ";//split inside sentence (jpn and cnm = "")
+    public static String separator = "\t";//row separator
+    public static int minWordLength = 2;//jpn and cnm = 1 !
+
+    public static boolean checkLang() {
+        return "jpn".equals(lang) || "cnm".equals(lang);
+    }
+
+    /******/
+
 
     public static void main(String[] args) throws IOException {
         Main main = new Main();
@@ -15,94 +39,90 @@ public class Main {
     }
 
     private void start() throws IOException {
-
-        String devDir = "src/development/files";
-//        String devDir = "src/test/files";
-        String lang = "eng";
-        String secondLang = "rus";
-
-
+        System.out.println("Wait a few minutes...");
         File sentencesWithAudioIn = new File(devDir + "/sentences_with_audio.csv");
         File sentences = new File(devDir + "/sentences.csv");
         File originalLinks = new File(devDir + "/links.csv");
 
-        File engSentencesWithAudioOut = new File(devDir + "/tmp/" + lang + "SentencesWithAudioTmp.txt");
-        File rusSentencesWithAudioOut = new File(devDir + "/tmp/" + secondLang + "SentencesWithAudioTmp.txt");
-        File engLangSentencesTmp = new File(devDir + "/tmp/" + lang + "SentencesTmp.txt");
-        File rusLangSentencesTmp = new File(devDir + "/tmp/" + secondLang + "SentencesTmp.txt");
-        File engSentencesWithAudioOutWithoutRepeat = new File(devDir + "/tmp/" + lang + "SentencesWithAudioWithoutRepeat.txt");
-        File langWordsTmp = new File(devDir + "/tmp/" + lang + "WordsTmp.txt");
+        File engLangSentencesTmp = new File(devDir + "tmp/" + lang + "SentencesTmp.txt");
+        File rusLangSentencesTmp = new File(devDir + "tmp/" + secondLang + "SentencesTmp.txt");
+        File engSentencesWithAudioOut = new File(devDir + "tmp/" + lang + "SentencesWithAudioTmp.txt");
+        File rusSentencesWithAudioOut = new File(devDir + "tmp/" + secondLang + "SentencesWithAudioTmp.txt");
+        File engSentencesWithAudioOutWithoutRepeat = new File(devDir + "tmp/" + lang + "SentencesWithAudioWithoutRepeat.txt");
 
-        File engRusSentencesLinks = new File(devDir + "/seeds_data/" + lang + secondLang + "SentencesLinks.txt");
-        File langWords = new File(devDir + "/seeds_data/" + lang + "Words.txt");//
-        File wordSentenceLinks = new File(devDir + "/seeds_data/" + lang + "WordSentenceLinks.txt");
-        File engSentences = new File(devDir + "/seeds_data/" + lang + "Sentences.txt");
-        File rusSentences = new File(devDir + "/seeds_data/" + secondLang+ "Sentences.txt");
+        File langWordsTmp = new File(devDir + lang + "WordsTmp.txt");
+
+        File engRusSentencesLinks = new File(devDir +"seeds_data/"+ lang + secondLang + "/" + lang + secondLang + "SentencesLinks.txt");
+        File langWords = new File(devDir +"seeds_data/"+ lang + secondLang + "/" + lang + "Words.txt");//
+        File wordSentenceLinks = new File(devDir +"seeds_data/"+ lang + secondLang + "/" + lang + "WordSentenceLinks.txt");
+        File engSentences = new File(devDir +"seeds_data/" + lang + secondLang + "/" + lang + "Sentences.txt");
+        File rusSentences = new File(devDir +"seeds_data/"+ lang + secondLang + "/" + secondLang + "Sentences.txt");
 
 
         long startTime, endTime, duration;
-        long l = 60000000000L;
+
+        long l = 1000000000L;
         makeDir(devDir);
         startTime = System.nanoTime();
         first(sentences, engLangSentencesTmp, lang);
         first(sentences, rusLangSentencesTmp, secondLang);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("first is ready " + duration + " min");
+        System.out.println("first is ready " + duration + " sec");
 
         startTime = System.nanoTime();
         second(engLangSentencesTmp, sentencesWithAudioIn, engSentencesWithAudioOut);
         second(rusLangSentencesTmp, sentencesWithAudioIn, rusSentencesWithAudioOut);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("second is ready " + duration + " min");
+        System.out.println("second is ready " + duration + " sec");
 
         startTime = System.nanoTime();
         third(engSentencesWithAudioOut, engSentencesWithAudioOutWithoutRepeat);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("third is ready " + duration + " min");
+        System.out.println("third is ready " + duration + " sec");
 
         startTime = System.nanoTime();
         fourth(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, originalLinks, engRusSentencesLinks);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("fourth is ready " + duration + " min");
+        System.out.println("fourth is ready " + duration + " sec");
 
         startTime = System.nanoTime();
         fifth(engSentencesWithAudioOutWithoutRepeat, langWordsTmp);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("fifth is ready " + duration + " min");
+        System.out.println("fifth is ready " + duration + " sec");
 
 
         startTime = System.nanoTime();
         sixth(langWordsTmp, engSentencesWithAudioOutWithoutRepeat, engRusSentencesLinks, wordSentenceLinks);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("sixth is ready " + duration + " min");
+        System.out.println("sixth is ready " + duration + " sec");
 
         startTime = System.nanoTime();
         seventh(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, wordSentenceLinks, engRusSentencesLinks, engSentences, rusSentences);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("seventh is ready " + duration + " min");
+        System.out.println("seventh is ready " + duration + " sec");
 
 
         startTime = System.nanoTime();
         eighth(engRusSentencesLinks, wordSentenceLinks, langWordsTmp, langWords);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("eighth is ready " + duration + " min");
+        System.out.println("eighth is ready " + duration + " sec");
 
     }
 
     private void eighth(File engRusSentencesLinks, File wordSentenceLinks, File langWordsTmp, File langWords) throws IOException {
         FilterOfWordsFile filterOfWordsFile = new FilterOfWordsFile();
-        filterOfWordsFile.start( engRusSentencesLinks,  wordSentenceLinks,  langWordsTmp,  langWords);
+        filterOfWordsFile.start(engRusSentencesLinks, wordSentenceLinks, langWordsTmp, langWords);
     }
 
-    private void seventh(File engSentencesWithAudioOutWithoutRepeat, File rusSentencesWithAudioOut, File wordSentenceLinks, File  engrusLinks, File engSentences, File rusSentences) throws IOException {
+    private void seventh(File engSentencesWithAudioOutWithoutRepeat, File rusSentencesWithAudioOut, File wordSentenceLinks, File engrusLinks, File engSentences, File rusSentences) throws IOException {
         FilterOfSentencesFile x = new FilterOfSentencesFile();
         x.start(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, wordSentenceLinks, engrusLinks, engSentences, rusSentences);
     }
@@ -110,7 +130,7 @@ public class Main {
     /**
      * Get file with links of id of words and id of sentence with the word
      */
-    private void sixth(File langWords, File langSentences,File engRusSentencesLinks, File wordSentenceLinks) throws IOException {
+    private void sixth(File langWords, File langSentences, File engRusSentencesLinks, File wordSentenceLinks) throws IOException {
         MakeFileOfWordSentenceLinks x = new MakeFileOfWordSentenceLinks();
         x.start(langWords, langSentences, engRusSentencesLinks, wordSentenceLinks);
     }
@@ -119,8 +139,10 @@ public class Main {
      * Word counting
      */
     private void fifth(File langSentences, File langWordsTmp) throws IOException {
-        WordCount wordCount = new WordCount();
-        wordCount.start(langSentences, langWordsTmp);
+        if (!checkLang()) {
+            WordCount wordCount = new WordCount();
+            wordCount.start(langSentences, langWordsTmp);
+        }
     }
 
     /**
@@ -152,13 +174,15 @@ public class Main {
      */
     private void first(File sentencesWithAudioOut, File langSentencesTmp, String lang) throws IOException {
         MakeFileWithSentencesOfSpecificLanguage makeFileWithSentencesOfSpecificLanguage = new MakeFileWithSentencesOfSpecificLanguage();
-        makeFileWithSentencesOfSpecificLanguage.start(sentencesWithAudioOut,  langSentencesTmp,  lang);
+        makeFileWithSentencesOfSpecificLanguage.start(sentencesWithAudioOut, langSentencesTmp, lang);
     }
 
     private void makeDir(String devDir) {
         File dir1 = new File(devDir + "/tmp");
         File dir2 = new File(devDir + "/seeds_data");
+        File dir3 = new File(devDir + "/seeds_data/" +lang+secondLang);
         dir1.mkdir();
         dir2.mkdir();
+        dir3.mkdir();
     }
 }

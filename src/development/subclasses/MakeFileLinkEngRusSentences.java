@@ -14,7 +14,6 @@ public class MakeFileLinkEngRusSentences extends Zero {
         List<String> linksList = fileToList(originalLinks);
 
         List<String> engRusSentencesLinks = filter(engSet, rusSet, linksList);
-
         listToFile(engRusSentencesLinks, linksOut);
     }
 

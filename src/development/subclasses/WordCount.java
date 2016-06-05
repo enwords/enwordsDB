@@ -10,22 +10,24 @@ import java.util.*;
 public class WordCount extends Zero {
 
     public void start(File langSentences, File langWordsTmp) throws IOException {
+
         List<String> listOfSentences = fileToList(langSentences);
 
         List<String> listOfWords = wordCount(listOfSentences);
 
-        writeToFile(listOfWords, langWordsTmp );
+        writeToFile(listOfWords, langWordsTmp);
+
     }
 
     public List<String> wordCount(List<String> list) throws IOException {
         Map<String, Integer> wordCountMap = new HashMap<>();
 
         for (String s : list) {
-            List<String> arr = parseLine(s);
+            String[] arr = parseLineLight(s);
 
-            String text = arr.get(2);
+            String text = arr[2];
 
-            String[] words = removePunctuationAndDigits(text).split(" ");
+            String[] words = removePunctuationAndDigits(text).split(Main.splitSpace);
 
             Set<String> set = conditions(words);
 

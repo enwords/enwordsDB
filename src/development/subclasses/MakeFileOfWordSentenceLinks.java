@@ -72,13 +72,24 @@ public class MakeFileOfWordSentenceLinks extends Zero {
             text = arr[2];
             bool = arr[3];
             localMap = new HashMap<>();
-            words = removePunctuationAndDigits(text).split(" ");
 
-            for (String word : words) {
+            if (!Main.checkLang()) {
+                words = removePunctuationAndDigits(text).split(Main.splitSpace);
 
-                if (wordSet.contains(word)) {
-                    int wordId = wordList.indexOf(word) + 1;
-                    localMap.put(wordId, sentenceId);
+                for (String word : words) {
+
+                    if (wordSet.contains(word)) {
+                        int wordId = wordList.indexOf(word) + 1;
+                        localMap.put(wordId, sentenceId);
+                    }
+                }
+            }else {
+                for (String word : wordList) {
+                    if (text.contains(word)){
+                        int wordId = wordList.indexOf(word) + 1;
+                        localMap.put(wordId, sentenceId);
+                        break;
+                    }
                 }
             }
 

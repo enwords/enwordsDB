@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
-public class Fifth extends Zero {
+public class WordCount extends Zero {
 
     public void start(File langSentences, File langWordsTmp) throws IOException {
         List<String> listOfSentences = fileToList(langSentences);

@@ -7,6 +7,23 @@ import java.util.*;
 
 public class Zero {
 
+    public <T> Set<T> fileToSet(File file, int param) throws IOException {
+        Set<T> result = new HashSet<>();
+
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
+            String line;
+            while (fileReader.ready()) {
+                line = fileReader.readLine();
+
+                String[] arr = parseLineLight(line);
+
+                result.add((T) arr[param]);
+
+            }
+        }
+        return result;
+    }
+
     public <T> Set<T> fileToSet(File file) throws IOException {
         Set<T> result = new HashSet<>();
 
@@ -67,16 +84,6 @@ public class Zero {
         return res;
     }
 
-    public Map<String, String> listToMap(List<String> list) throws IOException {
-        Map<String, String> map = new LinkedHashMap<>();
-        for (String sentence : list) {
-            String[] splitSen = parseLineLight(sentence);
-            map.put(splitSen[0], sentence);
-        }
-
-        return map;
-    }
-
     /**
      * delete bad words for english
      */
@@ -102,6 +109,7 @@ public class Zero {
 
 
     public String removePunctuationAndDigits(String word) {
+//        return word.replaceAll("(?!')\\W+\\p{Digit}+", " ").toLowerCase();
         return word.replaceAll("(?!')\\W+", " ").replaceAll("\\p{Digit}+", " ").toLowerCase();
     }
 }

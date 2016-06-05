@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Third extends Zero {
+public class DeleteRepeatedSentences extends Zero {
 
     static List<String> listSentences;
     static List<String> listSentencesWithAudio;
@@ -36,8 +36,8 @@ public class Third extends Zero {
 
     private void splitList(List<String> list) throws IOException {
         for (String sentence : list) {
-            List<String> splitSen = parseLine(sentence);
-            if (splitSen.size()>3 && splitSen.get(3).equals("true")) {
+            String[] splitSen = parseLineLight(sentence);
+            if (splitSen.length >3 && splitSen[3].equals("true")) {
                 listSentencesWithAudio.add(sentence);
             }
             listSentences.add(sentence);
@@ -46,8 +46,8 @@ public class Third extends Zero {
 
     private void listToMap(List<String> list, Map<String, String> map) throws IOException {
         for (String sentence : list) {
-            List<String> splitSen = parseLine(sentence);
-            String key = removePunctuationAndDigits(splitSen.get(2));
+            String[]splitSen = parseLineLight(sentence);
+            String key = removePunctuationAndDigits(splitSen[2]);
 
             if (key.length() < 200) map.put(key, sentence);
         }

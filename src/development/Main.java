@@ -50,7 +50,6 @@ public class Main {
         duration = (endTime - startTime) / l;
         System.out.println("first is ready " + duration + " min");
 
-        //TODO too slow..(46 min)
         startTime = System.nanoTime();
         second(engLangSentencesTmp, sentencesWithAudioIn, engSentencesWithAudioOut);
         second(rusLangSentencesTmp, sentencesWithAudioIn, rusSentencesWithAudioOut);
@@ -77,9 +76,8 @@ public class Main {
         System.out.println("fifth is ready " + duration + " min");
 
 
-//        //TODO too slow..42min
         startTime = System.nanoTime();
-        sixth(langWordsTmp, engSentencesWithAudioOutWithoutRepeat, wordSentenceLinks);
+        sixth(langWordsTmp, engSentencesWithAudioOutWithoutRepeat, engRusSentencesLinks, wordSentenceLinks);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("sixth is ready " + duration + " min");
@@ -100,64 +98,61 @@ public class Main {
     }
 
     private void eighth(File engRusSentencesLinks, File wordSentenceLinks, File langWordsTmp, File langWords) throws IOException {
-        Eighth eighth = new Eighth();
-        eighth.start( engRusSentencesLinks,  wordSentenceLinks,  langWordsTmp,  langWords);
+        FilterOfWordsFile filterOfWordsFile = new FilterOfWordsFile();
+        filterOfWordsFile.start( engRusSentencesLinks,  wordSentenceLinks,  langWordsTmp,  langWords);
     }
 
-    /**
-     * Get file with union rus and eng sentences
-     */
     private void seventh(File engSentencesWithAudioOutWithoutRepeat, File rusSentencesWithAudioOut, File wordSentenceLinks, File  engrusLinks, File engSentences, File rusSentences) throws IOException {
-        Seventh x = new Seventh();
+        FilterOfSentencesFile x = new FilterOfSentencesFile();
         x.start(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, wordSentenceLinks, engrusLinks, engSentences, rusSentences);
     }
 
     /**
      * Get file with links of id of words and id of sentence with the word
      */
-    private void sixth(File langWords, File langSentences, File wordSentenceLinks) throws IOException {
-        Sixth x = new Sixth();
-        x.start(langWords, langSentences, wordSentenceLinks);
+    private void sixth(File langWords, File langSentences,File engRusSentencesLinks, File wordSentenceLinks) throws IOException {
+        MakeFileOfWordSentenceLinks x = new MakeFileOfWordSentenceLinks();
+        x.start(langWords, langSentences, engRusSentencesLinks, wordSentenceLinks);
     }
 
     /**
      * Word counting
      */
     private void fifth(File langSentences, File langWordsTmp) throws IOException {
-        Fifth fifth = new Fifth();
-        fifth.start(langSentences, langWordsTmp);
+        WordCount wordCount = new WordCount();
+        wordCount.start(langSentences, langWordsTmp);
     }
 
     /**
      * Get file of links (id of sentence - id of translate)
      */
     private void fourth(File langSentences, File secondLangSentences, File originalLinks, File links) throws IOException {
-        Fourth fourth = new Fourth();
-        fourth.start(langSentences, secondLangSentences, originalLinks, links);
+        MakeFileLinkEngRusSentences makeFileLinkEngRusSentences = new MakeFileLinkEngRusSentences();
+        makeFileLinkEngRusSentences.start(langSentences, secondLangSentences, originalLinks, links);
     }
 
     /**
      * Delete repeated sentences
      */
     private void third(File langSentencesTmp, File langSentences) throws IOException {
-        Third third = new Third();
-        third.start(third.fileToList(langSentencesTmp), langSentences);
-    }
-
-    /**
-     * Get file of sentences with specific language
-     */
-    private void first(File sentencesWithAudioOut, File langSentencesTmp, String lang) throws IOException {
-        Second second = new Second();
-        second.listToFile(second.fileToList(sentencesWithAudioOut), langSentencesTmp, lang);
+        DeleteRepeatedSentences deleteRepeatedSentences = new DeleteRepeatedSentences();
+        deleteRepeatedSentences.start(deleteRepeatedSentences.fileToList(langSentencesTmp), langSentences);
     }
 
     /**
      * Get file of sentences with audio column
      */
     private void second(File sentences, File sentencesWithAudioIn, File sentencesWithAudioOut) throws IOException {
-        First first = new First();
-        first.writeListAudioToFile(sentencesWithAudioOut, first.fileToList(sentencesWithAudioIn), first.fileToList(sentences));
+        MakeSentenceFileWithAudioColumn makeSentenceFileWithAudioColumn = new MakeSentenceFileWithAudioColumn();
+        makeSentenceFileWithAudioColumn.start(sentences, sentencesWithAudioIn, sentencesWithAudioOut);
+    }
+
+    /**
+     * Get file of sentences with specific language
+     */
+    private void first(File sentencesWithAudioOut, File langSentencesTmp, String lang) throws IOException {
+        MakeFileWithSentencesOfSpecificLanguage makeFileWithSentencesOfSpecificLanguage = new MakeFileWithSentencesOfSpecificLanguage();
+        makeFileWithSentencesOfSpecificLanguage.start(sentencesWithAudioOut,  langSentencesTmp,  lang);
     }
 
     private void makeDir(String devDir) {

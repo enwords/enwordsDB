@@ -5,7 +5,7 @@ import development.Main;
 import java.io.*;
 import java.util.*;
 
-public class Seventh extends Zero {
+public class FilterOfSentencesFile extends Zero {
     public void start(File engSentencesWithAudioOutWithoutRepeat, File rusSentencesWithAudioOut, File wordSentenceLinks,
                       File engrusLinks, File engSentences, File rusSentences) throws IOException {
         List<String> engList = fileToList(engSentencesWithAudioOutWithoutRepeat);

@@ -1,5 +1,7 @@
 package development.subclasses;
 
+import development.Main;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -7,7 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Eighth extends Zero {
+public class FilterOfWordsFile extends Zero {
     public void start(File engRusSentencesLinks, File wordSentenceLinks, File langWordsTmp, File langWords) throws IOException {
         List<String> engRusSentencesLinksList = fileToList(engRusSentencesLinks);
         List<String> wordSentenceLinksList = fileToList(wordSentenceLinks);
@@ -26,7 +28,7 @@ public class Eighth extends Zero {
             for (String s : list) {
                 String[] arr = parseLineLight(s);
                 if (set.contains(arr[0])) {
-                    printWriter.println(s);
+                    printWriter.println(arr[0]+ Main.separator+arr[1]);
                 }
             }
         }

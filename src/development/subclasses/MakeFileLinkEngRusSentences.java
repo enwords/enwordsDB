@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class MakeFileLinkEngRusSentences extends Zero {
@@ -14,19 +13,19 @@ public class MakeFileLinkEngRusSentences extends Zero {
         Set<String> rusSet = fileToSet(secondLangSentences, 0);
         List<String> linksList = fileToList(originalLinks);
 
-        List<String> engRusSentencesLinks = method(engSet, rusSet, linksList);
+        List<String> engRusSentencesLinks = filter(engSet, rusSet, linksList);
 
         listToFile(engRusSentencesLinks, linksOut);
     }
 
 
-    private List<String> method(Set<String> engMap, Set<String> rusMap, List<String> linksList) {
+    private List<String> filter(Set<String> engSet, Set<String> rusSet, List<String> linksList) {
         List<String> result = new ArrayList<>();
-
+        String[] parsedString;
         for (String string : linksList) {
-            String[] parsedString = parseLineLight(string);
+            parsedString = parseLineLight(string);
 
-            if (engMap.contains(parsedString[0]) && rusMap.contains(parsedString[1])) {
+            if (engSet.contains(parsedString[0]) && rusSet.contains(parsedString[1])) {
                 result.add(string);
             }
         }

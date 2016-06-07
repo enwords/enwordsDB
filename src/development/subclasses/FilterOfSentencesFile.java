@@ -17,8 +17,8 @@ public class FilterOfSentencesFile extends Zero {
         Set<Integer> engrusLinksList = engrusLinksListToList(engrusLinksList1, linksSet);//
         List<String> listE = mapToList(mapEngSen, engrusLinksList);
         List<String> listR = mapToList(mapRusSen, engrusLinksList);
-        listToFile(listE, engSentences);
-        listToFile(listR, rusSentences);
+        collectionToFile(listE, engSentences);
+        collectionToFile(listR, rusSentences);
 
     }
 

@@ -21,7 +21,7 @@ public class DeleteRepeatedSentences extends Zero {
         splitList(list);
         listToMap(listSentences, map);
         listToMap(listSentencesWithAudio, map);
-        listToFile(mapToList(map), output);
+        collectionToFile(mapToList(map), output);
     }
 
 

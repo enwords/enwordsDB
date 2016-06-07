@@ -60,11 +60,28 @@ public class Zero {
         return result;
     }
 
+//    public <T> void collectionToFile( Collection<T> list, File file) throws IOException {
+//        try (PrintWriter printWriter = new PrintWriter(file)) {
+//
+//            for (T sentence : list) {
+//                printWriter.println(sentence);
+//            }
+//        }
+//    }
+//
+//    public <T> void setToFile( Set<T> list, File file) throws IOException {
+//        try (PrintWriter printWriter = new PrintWriter(file)) {
+//
+//            for (T sentence : list) {
+//                printWriter.println(sentence);
+//            }
+//        }
+//    }
 
-    public void listToFile(List<String> list, File file) throws IOException {
+    public <T> void collectionToFile(Collection<T> list, File file) throws IOException {
         try (PrintWriter printWriter = new PrintWriter(file)) {
 
-            for (String sentence : list) {
+            for (T sentence : list) {
                 printWriter.println(sentence);
             }
         }

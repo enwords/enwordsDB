@@ -1,6 +1,8 @@
 package development.subclasses;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,24 +13,29 @@ public class MakeFileLinkEngRusSentences extends Zero {
 
         Set<String> engSet = fileToSet(langSentences, 0);
         Set<String> rusSet = fileToSet(secondLangSentences, 0);
-        List<String> linksList = fileToList(originalLinks);
 
-        List<String> engRusSentencesLinks = filter(engSet, rusSet, linksList);
+        List<String> engRusSentencesLinks = filter(engSet, rusSet, originalLinks);
         collectionToFile(engRusSentencesLinks, linksOut);
     }
 
-
-    private List<String> filter(Set<String> engSet, Set<String> rusSet, List<String> linksList) {
+    private List<String> filter(Set<String> engSet, Set<String> rusSet, File linksList) throws IOException {
         List<String> result = new ArrayList<>();
         String[] parsedString;
-        for (String string : linksList) {
-            parsedString = parseLineLight(string);
+        String engSenId;
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(linksList.getAbsolutePath()))) {
 
-            if (engSet.contains(parsedString[0]) && rusSet.contains(parsedString[1])) {
-                result.add(string);
+            String line;
+            while (fileReader.ready()) {
+                line = fileReader.readLine();
+                parsedString = parseLineLight(line);
+                engSenId = parsedString[0];
+
+                if (engSet.contains(engSenId) && rusSet.contains(parsedString[1])) {
+                    result.add(line);
+                    engSet.remove(engSenId);
+                }
             }
         }
-
         return result;
     }
 }

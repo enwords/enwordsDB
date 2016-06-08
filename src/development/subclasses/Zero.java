@@ -152,9 +152,28 @@ public class Zero {
     public String removePunctuationAndDigits(String word) {
 //        return word.replaceAll("(?!')\\W+\\p{Digit}+", " ").toLowerCase();
 
-            return word.replaceAll("[^'\\p{L}]+", Main.splitSpace).toLowerCase();
-
+        String res1 = word.replaceAll("[^'\\p{L}]+", Main.splitSpace).toLowerCase();
+        String res2 = "";
+        if (!"eng".equals(Main.lang)) {
+            return res1;
+        } else {
+            String[] arr = res1.split(Main.splitSpace);
+            for (String s : arr) {
+                if (s.endsWith("'s")) {
+                    s = s.replace("'s", "");
+                } else if (s.endsWith("s'")) {
+                    s = s.replace("s'", "");
+                } else if (s.endsWith("rs")) {
+                    s = replaceLast(s, "rs", "r");
+                }
+                res2 += (Main.splitSpace + s);
+            }
+        }
+        return res2;
     }
 
+    public static String replaceLast(String text, String regex, String replacement) {
+        return text.replaceFirst("(?s)"+regex+"(?!.*?"+regex+")", replacement);
+    }
 
 }

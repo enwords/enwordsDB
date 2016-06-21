@@ -13,7 +13,10 @@ public class Main {
      */
     public static String lang = "eng";
     public static String secondLang = "rus";
-         String devDir = "src/development/files/";
+    public static String langOneId = "1";
+    public static String langTwoId = "2";
+
+    String devDir = "src/development/files/";
 //    String devDir = "src/test/files/";
 
 
@@ -58,56 +61,58 @@ public class Main {
         File engSentences = new File(devDir +"seeds_data/" + lang + secondLang + "/" + lang + "Sentences.txt");
         File rusSentences = new File(devDir +"seeds_data/"+ lang + secondLang + "/" + secondLang + "Sentences.txt");
         File audioLinks = new File(devDir +"seeds_data/"+ lang + secondLang + "/" + "audioLinks.txt");
+        File uniteSentence = new File(devDir +"seeds_data/"+ lang + secondLang + "/" + "sentences.txt");
+
 
 
         long startTime, endTime, duration;
 
         long l = 1000000000L;
-//        makeDir(devDir);
-//        startTime = System.nanoTime();
-//        first(sentences, engLangSentencesTmp, lang);
-//        first(sentences, rusLangSentencesTmp, secondLang);
-//        endTime = System.nanoTime();
-//        duration = (endTime - startTime) / l;
-//        System.out.println("first is ready " + duration + " sec");
-//
-//        startTime = System.nanoTime();
-//        second(engLangSentencesTmp, sentencesWithAudioIn, engSentencesWithAudioOut);
-//        second(rusLangSentencesTmp, sentencesWithAudioIn, rusSentencesWithAudioOut);
-//        endTime = System.nanoTime();
-//        duration = (endTime - startTime) / l;
-//        System.out.println("second is ready " + duration + " sec");
-//
-//        startTime = System.nanoTime();
-//        third(engSentencesWithAudioOut, engSentencesWithAudioOutWithoutRepeat);
-//        endTime = System.nanoTime();
-//        duration = (endTime - startTime) / l;
-//        System.out.println("third is ready " + duration + " sec");
-//
-//        startTime = System.nanoTime();
-//        fourth(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, originalLinks, engRusSentencesLinks);
-//        endTime = System.nanoTime();
-//        duration = (endTime - startTime) / l;
-//        System.out.println("fourth is ready " + duration + " sec");
-//
-//        startTime = System.nanoTime();
-//        fifth(engSentencesWithAudioOutWithoutRepeat, langWordsTmp);
-//        endTime = System.nanoTime();
-//        duration = (endTime - startTime) / l;
-//        System.out.println("fifth is ready " + duration + " sec");
-//
-//
-//        startTime = System.nanoTime();
-//        sixth(langWordsTmp, engSentencesWithAudioOutWithoutRepeat, engRusSentencesLinks, wordSentenceLinks);
-//        endTime = System.nanoTime();
-//        duration = (endTime - startTime) / l;
-//        System.out.println("sixth is ready " + duration + " sec");
-//
-//        startTime = System.nanoTime();
-//        seventh(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, wordSentenceLinks, engRusSentencesLinks, engSentences, rusSentences);
-//        endTime = System.nanoTime();
-//        duration = (endTime - startTime) / l;
-//        System.out.println("seventh is ready " + duration + " sec");
+        makeDir(devDir);
+        startTime = System.nanoTime();
+        first(sentences, engLangSentencesTmp, lang);
+        first(sentences, rusLangSentencesTmp, secondLang);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / l;
+        System.out.println("first is ready " + duration + " sec");
+
+        startTime = System.nanoTime();
+        second(engLangSentencesTmp, sentencesWithAudioIn, engSentencesWithAudioOut);
+        second(rusLangSentencesTmp, sentencesWithAudioIn, rusSentencesWithAudioOut);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / l;
+        System.out.println("second is ready " + duration + " sec");
+
+        startTime = System.nanoTime();
+        third(engSentencesWithAudioOut, engSentencesWithAudioOutWithoutRepeat);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / l;
+        System.out.println("third is ready " + duration + " sec");
+
+        startTime = System.nanoTime();
+        fourth(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, originalLinks, engRusSentencesLinks);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / l;
+        System.out.println("fourth is ready " + duration + " sec");
+
+        startTime = System.nanoTime();
+        fifth(engSentencesWithAudioOutWithoutRepeat, langWordsTmp);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / l;
+        System.out.println("fifth is ready " + duration + " sec");
+
+
+        startTime = System.nanoTime();
+        sixth(langWordsTmp, engSentencesWithAudioOutWithoutRepeat, engRusSentencesLinks, wordSentenceLinks);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / l;
+        System.out.println("sixth is ready " + duration + " sec");
+
+        startTime = System.nanoTime();
+        seventh(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, wordSentenceLinks, engRusSentencesLinks, engSentences, rusSentences);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / l;
+        System.out.println("seventh is ready " + duration + " sec");
 
 
         startTime = System.nanoTime();
@@ -123,6 +128,17 @@ public class Main {
         duration = (endTime - startTime) / l;
         System.out.println("ninth is ready " + duration + " sec");
 
+        startTime = System.nanoTime();
+        tenth(engSentences, rusSentences, uniteSentence);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / l;
+        System.out.println("tenth is ready " + duration + " sec");
+
+    }
+
+    private void tenth(File engSentences, File rusSentences, File uniteSentence) throws IOException {
+        UniteSentences u = new UniteSentences();
+        u.start(engSentences, rusSentences, uniteSentence);
     }
 
     private void ninth(File engSentences, File rusSentences, File audioLinks) throws IOException {

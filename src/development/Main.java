@@ -27,7 +27,7 @@ public class Main {
      */
     public static String splitSpace = " ";//split inside sentence (jpn and cnm = "")
     public static String separator = "\t";//row separator
-    public static int minWordLength = 2;//jpn and cnm = 1 !
+    public static int minWordLength = 1;//jpn and cnm = 1 !
 
     public static boolean checkLang() {
         return "jpn".equals(lang) || "cnm".equals(lang);
@@ -50,19 +50,18 @@ public class Main {
         File engLangSentencesTmp = new File(devDir + "tmp/" + lang + "SentencesTmp.txt");
         File rusLangSentencesTmp = new File(devDir + "tmp/" + secondLang + "SentencesTmp.txt");
         File engSentencesWithAudioOut = new File(devDir + "tmp/" + lang + "SentencesWithAudioTmp.txt");
-        File rusSentencesWithAudioOut = new File(devDir + "tmp/" + secondLang + "SentencesWithAudioTmp.txt");
         File engSentencesWithAudioOutWithoutRepeat = new File(devDir + "tmp/" + lang + "SentencesWithAudioWithoutRepeat.txt");
+        File engSentences = new File(devDir + "tmp/" + lang + "Sentences.txt");
+        File rusSentences = new File(devDir + "tmp/" + secondLang + "Sentences.txt");
+        File langWords = new File(devDir + "tmp/" + lang + "Words.txt");
 
-        File langWordsTmp = new File(devDir + lang + "WordsTmp.txt");
+        File langWordsAll = new File(devDir + lang + "WordsAll.txt");
 
-        File engRusSentencesLinks = new File(devDir +"seeds_data/"+ lang + secondLang + "/" + lang + secondLang + "SentencesLinks.txt");
-        File langWords = new File(devDir +"seeds_data/"+ lang + secondLang + "/" + lang + "Words.txt");//
-        File wordSentenceLinks = new File(devDir +"seeds_data/"+ lang + secondLang + "/" + lang + "WordSentenceLinks.txt");
-        File engSentences = new File(devDir +"seeds_data/" + lang + secondLang + "/" + lang + "Sentences.txt");
-        File rusSentences = new File(devDir +"seeds_data/"+ lang + secondLang + "/" + secondLang + "Sentences.txt");
-        File audioLinks = new File(devDir +"seeds_data/"+ lang + secondLang + "/" + "audioLinks.txt");
-        File uniteSentence = new File(devDir +"seeds_data/"+ lang + secondLang + "/" + "sentences.txt");
-
+        File engRusSentencesLinks = new File(devDir + "seeds_data/" + lang + secondLang + "/" + "links.tsv");
+        File wordSentenceLinks = new File(devDir + "seeds_data/" + lang + secondLang + "/" + "word_sentence.tsv");
+        File audioLinks = new File(devDir + "seeds_data/" + lang + secondLang + "/" + "audio.tsv");
+        File uniteSentence = new File(devDir + "seeds_data/" + lang + secondLang + "/" + "sentences.tsv");
+        File words = new File(devDir + "seeds_data/" + lang + secondLang + "/" + "words.tsv");
 
 
         long startTime, endTime, duration;
@@ -78,7 +77,6 @@ public class Main {
 
         startTime = System.nanoTime();
         second(engLangSentencesTmp, sentencesWithAudioIn, engSentencesWithAudioOut);
-        second(rusLangSentencesTmp, sentencesWithAudioIn, rusSentencesWithAudioOut);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("second is ready " + duration + " sec");
@@ -90,40 +88,40 @@ public class Main {
         System.out.println("third is ready " + duration + " sec");
 
         startTime = System.nanoTime();
-        fourth(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, originalLinks, engRusSentencesLinks);
+        fourth(engSentencesWithAudioOutWithoutRepeat, rusLangSentencesTmp, originalLinks, engRusSentencesLinks);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("fourth is ready " + duration + " sec");
 
         startTime = System.nanoTime();
-        fifth(engSentencesWithAudioOutWithoutRepeat, langWordsTmp);
+        fifth(engSentencesWithAudioOutWithoutRepeat, langWordsAll);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("fifth is ready " + duration + " sec");
 
 
         startTime = System.nanoTime();
-        sixth(langWordsTmp, engSentencesWithAudioOutWithoutRepeat, engRusSentencesLinks, wordSentenceLinks);
+        sixth(langWordsAll, engSentencesWithAudioOutWithoutRepeat, engRusSentencesLinks, wordSentenceLinks);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("sixth is ready " + duration + " sec");
 
         startTime = System.nanoTime();
-        seventh(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, wordSentenceLinks, engRusSentencesLinks, engSentences, rusSentences);
+        seventh(engSentencesWithAudioOutWithoutRepeat, rusLangSentencesTmp, wordSentenceLinks, engRusSentencesLinks, engSentences, rusSentences);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("seventh is ready " + duration + " sec");
 
 
         startTime = System.nanoTime();
-        eighth(engRusSentencesLinks, wordSentenceLinks, langWordsTmp, langWords);
+        eighth(engRusSentencesLinks, wordSentenceLinks, langWordsAll, langWords);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("eighth is ready " + duration + " sec");
 
 
         startTime = System.nanoTime();
-        ninth(engSentences, rusSentences, audioLinks);
+        ninth(engSentences, audioLinks);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("ninth is ready " + duration + " sec");
@@ -134,23 +132,49 @@ public class Main {
         duration = (endTime - startTime) / l;
         System.out.println("tenth is ready " + duration + " sec");
 
+        startTime = System.nanoTime();
+        eleventh(langWordsAll, words);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / l;
+        System.out.println("eleventh is ready " + duration + " sec");
+
     }
 
+    /**
+     * Get tsv file of all words of first lang
+     */
+    private void eleventh(File langWordsAll, File words) throws IOException {
+        CopyWords u = new CopyWords();
+        u.start(langWordsAll, words);
+    }
+
+    /**
+     * Get file with first and second lang united
+     */
     private void tenth(File engSentences, File rusSentences, File uniteSentence) throws IOException {
         UniteSentences u = new UniteSentences();
         u.start(engSentences, rusSentences, uniteSentence);
     }
 
-    private void ninth(File engSentences, File rusSentences, File audioLinks) throws IOException {
+    /**
+     * Get file with ids of first lang sentences which has audio
+     */
+    private void ninth(File engSentences, File audioLinks) throws IOException {
         MakeAudioLinkFile n = new MakeAudioLinkFile();
-        n.start(engSentences,  rusSentences,  audioLinks);
+        n.start(engSentences, audioLinks);
     }
 
+    /**
+     * Get file with first lang words which exist in sentences which has links to translate
+     */
     private void eighth(File engRusSentencesLinks, File wordSentenceLinks, File langWordsTmp, File langWords) throws IOException {
         FilterOfWordsFile filterOfWordsFile = new FilterOfWordsFile();
         filterOfWordsFile.start(engRusSentencesLinks, wordSentenceLinks, langWordsTmp, langWords);
     }
 
+    /**
+     * Get two files of first and second languages, each sentence has link to translate
+     */
     private void seventh(File engSentencesWithAudioOutWithoutRepeat, File rusSentencesWithAudioOut, File wordSentenceLinks, File engrusLinks, File engSentences, File rusSentences) throws IOException {
         FilterOfSentencesFile x = new FilterOfSentencesFile();
         x.start(engSentencesWithAudioOutWithoutRepeat, rusSentencesWithAudioOut, wordSentenceLinks, engrusLinks, engSentences, rusSentences);
@@ -209,7 +233,7 @@ public class Main {
     private void makeDir(String devDir) {
         File dir1 = new File(devDir + "/tmp");
         File dir2 = new File(devDir + "/seeds_data");
-        File dir3 = new File(devDir + "/seeds_data/" +lang+secondLang);
+        File dir3 = new File(devDir + "/seeds_data/" + lang + secondLang);
         dir1.mkdir();
         dir2.mkdir();
         dir3.mkdir();

@@ -38,7 +38,7 @@ public class FilterOfSentencesFile extends Zero {
     }
 
 
-    private Set<Integer> engrusLinksListToList(List<String> engrusLinks, Set<String> linksSet){
+    private Set<Integer> engrusLinksListToList(List<String> engrusLinks, Set<String> linksSet) {
         Set<Integer> result = new HashSet<>();
         String[] list;
 
@@ -59,7 +59,12 @@ public class FilterOfSentencesFile extends Zero {
 
         for (String line : list) {
             String[] parseList = parseLineLight(line);
-            res.put(Integer.parseInt(parseList[0]), parseList[0] + Main.separator + parseList[2] + Main.separator + parseList[3]);
+
+            if (parseList.length == 3) {
+                res.put(Integer.parseInt(parseList[0]), parseList[0] + Main.separator + parseList[2]);
+            } else if (parseList.length == 4) {
+                res.put(Integer.parseInt(parseList[0]), parseList[0] + Main.separator + parseList[2] + Main.separator + parseList[3]);
+            }
         }
         return res;
     }
@@ -72,7 +77,7 @@ public class FilterOfSentencesFile extends Zero {
             String line;
             while (fileReader.ready()) {
                 line = fileReader.readLine();
-                String [] list = parseLineLight(line);
+                String[] list = parseLineLight(line);
                 result.add(list[1]);
             }
         }

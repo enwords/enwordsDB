@@ -1,5 +1,6 @@
-package development;
+package development.subclasses;
 
+import development.Main;
 import development.subclasses.Zero;
 
 import java.io.BufferedReader;
@@ -25,12 +26,10 @@ public class UniteSentences extends Zero {
             String line;
             while (fileReader.ready()) {
                 line = fileReader.readLine();
-
-                String [] arr = line.split(Main.separator);
+                String[] arr = line.split(Main.separator);
                 String id = arr[0];
-                String text = arr[1];
-
-                result.add(id+Main.separator+ langId+ Main.separator +text);
+                String text = convertStringForTSV(arr[1]);
+                result.add(id + Main.separator + langId + Main.separator + text);
             }
         }
         return result;

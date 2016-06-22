@@ -29,6 +29,17 @@ public class Zero {
 //        listToFile(l2, new File("/home/sadedv/Documents/repo/jpnWordsTmp"));
 //    }
 
+    public String convertStringForTSV(String text) {
+        if (text.contains("\"")){
+            text = "\"" + text.replaceAll("\"", "\"\"") + "\"";
+        }
+
+        if (text.contains("\'")) {
+            text = text.replaceAll("\'", "\'\'");
+        }
+        return text;
+    }
+
     public <T> Set<T> fileToSet(File file, int param) throws IOException {
         Set<T> result = new HashSet<>();
 

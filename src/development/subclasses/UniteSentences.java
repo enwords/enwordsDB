@@ -1,7 +1,6 @@
 package development.subclasses;
 
 import development.Main;
-import development.subclasses.Zero;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,14 +11,14 @@ import java.util.List;
 
 public class UniteSentences extends Zero {
     public void start(File engSentences, File rusSentences, File uniteSentence) throws IOException {
-        List<String> engList = fileToList(engSentences, Main.langOneId);
-        List<String> rusList = fileToList(rusSentences, Main.langTwoId);
+        List<String> engList = fileToList(engSentences, Main.learningLang);
+        List<String> rusList = fileToList(rusSentences, Main.nativeLang);
 
         engList.addAll(rusList);
         collectionToFile(engList, uniteSentence);
     }
 
-    public List<String> fileToList(File file, String langId) throws IOException {
+    public List<String> fileToList(File file, String lang) throws IOException {
         List<String> result = new ArrayList<>();
 
         try (BufferedReader fileReader = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
@@ -29,7 +28,7 @@ public class UniteSentences extends Zero {
                 String[] arr = line.split(Main.separator);
                 String id = arr[0];
                 String text = convertStringForTSV(arr[1]);
-                result.add(id + Main.separator + langId + Main.separator + text);
+                result.add(id + Main.separator + lang + Main.separator + text);
             }
         }
         return result;

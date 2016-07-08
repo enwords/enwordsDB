@@ -11,8 +11,8 @@ public class Main {
     /**
      * OPTIONS
      */
-    public static String lang = "eng";
-    public static String secondLang = "rus";
+    public static String learningLang = "eng";
+    public static String nativeLang = "rus";
     public static String langOneId = "1";
     public static String langTwoId = "2";
 
@@ -30,7 +30,7 @@ public class Main {
     public static int minWordLength = 1;//jpn and cnm = 1 !
 
     public static boolean checkLang() {
-        return "jpn".equals(lang) || "cnm".equals(lang);
+        return "jpn".equals(learningLang) || "cnm".equals(learningLang);
     }
 
     /******/
@@ -47,21 +47,21 @@ public class Main {
         File sentences = new File(devDir + "/sentences.csv");
         File originalLinks = new File(devDir + "/links.csv");
 
-        File engLangSentencesTmp = new File(devDir + "tmp/" + lang + "SentencesTmp.txt");
-        File rusLangSentencesTmp = new File(devDir + "tmp/" + secondLang + "SentencesTmp.txt");
-        File engSentencesWithAudioOut = new File(devDir + "tmp/" + lang + "SentencesWithAudioTmp.txt");
-        File engSentencesWithAudioOutWithoutRepeat = new File(devDir + "tmp/" + lang + "SentencesWithAudioWithoutRepeat.txt");
-        File engSentences = new File(devDir + "tmp/" + lang + "Sentences.txt");
-        File rusSentences = new File(devDir + "tmp/" + secondLang + "Sentences.txt");
-        File langWords = new File(devDir + "tmp/" + lang + "Words.txt");
+        File engLangSentencesTmp = new File(devDir + "tmp/" + learningLang + "SentencesTmp.txt");
+        File rusLangSentencesTmp = new File(devDir + "tmp/" + nativeLang + "SentencesTmp.txt");
+        File engSentencesWithAudioOut = new File(devDir + "tmp/" + learningLang + "SentencesWithAudioTmp.txt");
+        File engSentencesWithAudioOutWithoutRepeat = new File(devDir + "tmp/" + learningLang + "SentencesWithAudioWithoutRepeat.txt");
+        File engSentences = new File(devDir + "tmp/" + learningLang + "Sentences.txt");
+        File rusSentences = new File(devDir + "tmp/" + nativeLang + "Sentences.txt");
+        File langWords = new File(devDir + "tmp/" + learningLang + "Words.txt");
 
-        File langWordsAll = new File(devDir + lang + "WordsAll.txt");
+        File langWordsAll = new File(devDir + learningLang + "WordsAll.txt");
 
-        File engRusSentencesLinks = new File(devDir + "seeds_data/" + lang + secondLang + "/" + "links.tsv");
-        File wordSentenceLinks = new File(devDir + "seeds_data/" + lang + secondLang + "/" + "word_sentence.tsv");
-        File audioLinks = new File(devDir + "seeds_data/" + lang + secondLang + "/" + "audio.tsv");
-        File uniteSentence = new File(devDir + "seeds_data/" + lang + secondLang + "/" + "sentences.tsv");
-        File words = new File(devDir + "seeds_data/" + lang + secondLang + "/" + "words.tsv");
+        File engRusSentencesLinks = new File(devDir + "seeds_data/" + learningLang + nativeLang + "/" + "links.tsv");
+        File wordSentenceLinks = new File(devDir + "seeds_data/" + learningLang + nativeLang + "/" + "word_sentence.tsv");
+        File audioLinks = new File(devDir + "seeds_data/" + learningLang + nativeLang + "/" + "audio.tsv");
+        File uniteSentence = new File(devDir + "seeds_data/" + learningLang + nativeLang + "/" + "sentences.tsv");
+        File words = new File(devDir + "seeds_data/" + learningLang + nativeLang + "/" + "words.tsv");
 
 
         long startTime, endTime, duration;
@@ -69,8 +69,8 @@ public class Main {
         long l = 1000000000L;
         makeDir(devDir);
         startTime = System.nanoTime();
-        first(sentences, engLangSentencesTmp, lang);
-        first(sentences, rusLangSentencesTmp, secondLang);
+        first(sentences, engLangSentencesTmp, learningLang);
+        first(sentences, rusLangSentencesTmp, nativeLang);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
         System.out.println("first is ready " + duration + " sec");
@@ -141,7 +141,7 @@ public class Main {
     }
 
     /**
-     * Get tsv file of all words of first lang
+     * Get tsv file of all words of first learningLang
      */
     private void eleventh(File langWordsAll, File words) throws IOException {
         CopyWords u = new CopyWords();
@@ -149,7 +149,7 @@ public class Main {
     }
 
     /**
-     * Get file with first and second lang united
+     * Get file with first and second learningLang united
      */
     private void tenth(File engSentences, File rusSentences, File uniteSentence) throws IOException {
         UniteSentences u = new UniteSentences();
@@ -157,7 +157,7 @@ public class Main {
     }
 
     /**
-     * Get file with ids of first lang sentences which has audio
+     * Get file with ids of first learningLang sentences which has audio
      */
     private void ninth(File engSentences, File audioLinks) throws IOException {
         MakeAudioLinkFile n = new MakeAudioLinkFile();
@@ -165,7 +165,7 @@ public class Main {
     }
 
     /**
-     * Get file with first lang words which exist in sentences which has links to translate
+     * Get file with first learningLang words which exist in sentences which has links to translate
      */
     private void eighth(File engRusSentencesLinks, File wordSentenceLinks, File langWordsTmp, File langWords) throws IOException {
         FilterOfWordsFile filterOfWordsFile = new FilterOfWordsFile();
@@ -233,7 +233,7 @@ public class Main {
     private void makeDir(String devDir) {
         File dir1 = new File(devDir + "/tmp");
         File dir2 = new File(devDir + "/seeds_data");
-        File dir3 = new File(devDir + "/seeds_data/" + lang + secondLang);
+        File dir3 = new File(devDir + "/seeds_data/" + learningLang + nativeLang);
         dir1.mkdir();
         dir2.mkdir();
         dir3.mkdir();

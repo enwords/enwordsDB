@@ -165,7 +165,7 @@ public class Zero {
 
         String res1 = word.replaceAll("[^'\\p{L}]+", Main.splitSpace).toLowerCase();
         String res2 = "";
-        if (!"eng".equals(Main.lang)) {
+        if (!"eng".equals(Main.learningLang)) {
             return res1;
         } else {
             String[] arr = res1.split(Main.splitSpace);

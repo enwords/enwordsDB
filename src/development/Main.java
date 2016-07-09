@@ -4,6 +4,9 @@ import development.subclasses.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Main {
 
@@ -11,10 +14,15 @@ public class Main {
     /**
      * OPTIONS
      */
-    public static String learningLang = "eng";
-    public static String nativeLang = "rus";
-    public static String langOneId = "1";
-    public static String langTwoId = "2";
+
+    //DO YOU HAVE FILE WITH WORDS OF LEARNING LANGUAGE? Please add language name to set
+    public static Set languagesWithYourWords = new HashSet<>();
+
+    private static final String[] SET_VALUES = new String[] { "a", "b" };
+    public static final Set<String> MY_SET = new HashSet<String>(Arrays.asList(SET_VALUES));
+
+    public static String learningLang = "jpn";
+    public static String nativeLang = "eng";
 
     String devDir = "src/development/files/";
 //    String devDir = "src/test/files/";
@@ -29,7 +37,7 @@ public class Main {
     public static String separator = "\t";//row separator
     public static int minWordLength = 1;//jpn and cnm = 1 !
 
-    public static boolean checkLang() {
+    public static boolean checkJpnCnmLang() {
         return "jpn".equals(learningLang) || "cnm".equals(learningLang);
     }
 
@@ -47,13 +55,14 @@ public class Main {
         File sentences = new File(devDir + "/sentences.csv");
         File originalLinks = new File(devDir + "/links.csv");
 
-        File engLangSentencesTmp = new File(devDir + "tmp/" + learningLang + "SentencesTmp.txt");
-        File rusLangSentencesTmp = new File(devDir + "tmp/" + nativeLang + "SentencesTmp.txt");
-        File engSentencesWithAudioOut = new File(devDir + "tmp/" + learningLang + "SentencesWithAudioTmp.txt");
-        File engSentencesWithAudioOutWithoutRepeat = new File(devDir + "tmp/" + learningLang + "SentencesWithAudioWithoutRepeat.txt");
-        File engSentences = new File(devDir + "tmp/" + learningLang + "Sentences.txt");
-        File rusSentences = new File(devDir + "tmp/" + nativeLang + "Sentences.txt");
-        File langWords = new File(devDir + "tmp/" + learningLang + "Words.txt");
+        String tmpDir = devDir + "/seeds_data/" + learningLang + nativeLang + "/tmp/";
+        File engLangSentencesTmp = new File(tmpDir + learningLang + "SentencesTmp.txt");
+        File rusLangSentencesTmp = new File(tmpDir + nativeLang + "SentencesTmp.txt");
+        File engSentencesWithAudioOut = new File(tmpDir + learningLang + "SentencesWithAudioColumnTmp.txt");
+        File engSentencesWithAudioOutWithoutRepeat = new File(tmpDir + learningLang + "SentencesWithAudioColumnWithoutRepeat.txt");
+        File engSentences = new File(tmpDir + learningLang + "Sentences.txt");
+        File rusSentences = new File(tmpDir + nativeLang + "Sentences.txt");
+        File langWords = new File(tmpDir + learningLang + "Words.txt");
 
         File langWordsAll = new File(devDir + learningLang + "WordsAll.txt");
 
@@ -192,7 +201,7 @@ public class Main {
      * Word counting
      */
     private void fifth(File langSentences, File langWordsTmp) throws IOException {
-        if (!checkLang()) {
+        if (!checkJpnCnmLang()) {
             WordCount wordCount = new WordCount();
             wordCount.start(langSentences, langWordsTmp);
         }
@@ -231,11 +240,11 @@ public class Main {
     }
 
     private void makeDir(String devDir) {
-        File dir1 = new File(devDir + "/tmp");
         File dir2 = new File(devDir + "/seeds_data");
         File dir3 = new File(devDir + "/seeds_data/" + learningLang + nativeLang);
-        dir1.mkdir();
+        File dir4 = new File(devDir + "/seeds_data/" + learningLang + nativeLang + "/tmp");
         dir2.mkdir();
         dir3.mkdir();
+        dir4.mkdir();
     }
 }

@@ -170,7 +170,7 @@ public class Zero {
         } else {
             String[] arr = res1.split(Main.splitSpace);
             for (String s : arr) {
-                if (s.endsWith("'s")) {
+                if (s.endsWith("'s") && !s.equals("let's")) {
                     s = s.replace("'s", "");
                 } else if (s.endsWith("s'")) {
                     s = s.replace("s'", "");

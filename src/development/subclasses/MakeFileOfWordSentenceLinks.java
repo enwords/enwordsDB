@@ -73,7 +73,7 @@ public class MakeFileOfWordSentenceLinks extends Zero {
             bool = arr[3];
             localMap = new HashMap<>();
 
-            if (!Main.checkLang()) {
+            if (!Main.checkJpnCnmLang()) {
                 words = removePunctuationAndDigits(text).split(Main.splitSpace);
 
                 for (String word : words) {
@@ -88,7 +88,6 @@ public class MakeFileOfWordSentenceLinks extends Zero {
                     if (text.contains(word)){
                         int wordId = wordList.indexOf(word) + 1;
                         localMap.put(wordId, sentenceId);
-                        break;
                     }
                 }
             }

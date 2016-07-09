@@ -9,16 +9,32 @@ public class MakeFileOfWordSentenceLinks extends Zero {
 
     public void start(File langWordsFile, File langSentencesFile, File engRusSentencesLinks , File outFile) throws IOException {
 
-        Set<String> wordSet = fileToSet(langWordsFile, 1);
+        Map<String, Integer> wordMap = fileToMap(langWordsFile);
+
         Set<String> engRusSentencesLinksSet = fileToSet(engRusSentencesLinks, 0);
-        List<String> wordList = fileWordsToArrayList(langWordsFile);
+//        List<String> wordList = fileWordsToArrayList(langWordsFile);
         List<String> listOfSentences = fileToList(langSentencesFile);
         Map<Integer, List<String>> mapWithAudio = new HashMap<>();
         Map<Integer, List<String>> mapWithoutAudio = new HashMap<>();
-        listOfWordsAndListOfSentencesToMap(wordSet, wordList, listOfSentences, mapWithAudio, mapWithoutAudio, engRusSentencesLinksSet);
+        listOfWordsAndListOfSentencesToMap(wordMap, listOfSentences, mapWithAudio, mapWithoutAudio, engRusSentencesLinksSet);
         Map<Integer, List<String>> m = mapPlusMap(mapWithAudio, mapWithoutAudio);
         writeMapToFile(m, outFile);
 
+    }
+
+    private Map<String, Integer> fileToMap(File file) throws IOException {
+        Map<String, Integer> result = new LinkedHashMap<>();
+
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
+            String line;
+            while (fileReader.ready()) {
+                line = fileReader.readLine();
+                String[] arr = parseLineLight(line);
+
+                result.put(arr[1], Integer.parseInt(arr[0]));
+            }
+        }
+        return result;
     }
 
     private Map<Integer, List<String>> mapPlusMap(Map<Integer, List<String>> mapWithAudio, Map<Integer, List<String>> mapWithoutAudio) {
@@ -54,7 +70,7 @@ public class MakeFileOfWordSentenceLinks extends Zero {
     }
 
 
-    private void listOfWordsAndListOfSentencesToMap(Set<String> wordSet, List<String> wordList, List<String> listOfSentences,
+    private void listOfWordsAndListOfSentencesToMap(Map<String, Integer> wordMap, List<String> listOfSentences,
                                                     Map<Integer, List<String>> mapWithAudio, Map<Integer, List<String>> mapWithoutAudio, Set<String>engRusSentencesLinksSet) {
 
         String[] arr;
@@ -78,29 +94,33 @@ public class MakeFileOfWordSentenceLinks extends Zero {
 
                 for (String word : words) {
 
-                    if (wordSet.contains(word)) {
-                        int wordId = wordList.indexOf(word) + 1;
-                        localMap.put(wordId, sentenceId);
+                    if (wordMap.containsKey(word)) {
+                        localMap.put(wordMap.get(word), sentenceId);
                     }
                 }
             }else {
-                for (String word : wordList) {
+
+                for (Map.Entry<String, Integer> pair : wordMap.entrySet()) {
+
+                    String word = pair.getKey();
+                    int wordId = pair.getValue();
+
                     if (text.contains(word)){
-                        int wordId = wordList.indexOf(word) + 1;
                         localMap.put(wordId, sentenceId);
                     }
                 }
+
             }
 
             for (Map.Entry<Integer, String> pair : localMap.entrySet()) {
-                int key = pair.getKey();
-                String value = pair.getValue();
+                int wordId = pair.getKey();
+                String senId = pair.getValue();
 
-                if (engRusSentencesLinksSet.contains(value)) {
+                if (engRusSentencesLinksSet.contains(senId)) {
                     if ("true".equals(bool)) {
-                        putToMap(mapWithAudio, key, value);
+                        putToMap(mapWithAudio, wordId, senId);
                     } else {
-                        putToMap(mapWithoutAudio, key, value);
+                        putToMap(mapWithoutAudio, wordId, senId);
                     }
                 }
 

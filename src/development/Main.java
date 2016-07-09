@@ -2,11 +2,11 @@ package development;
 
 import development.subclasses.*;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.InputStreamReader;
+import java.util.*;
 
 public class Main {
 
@@ -16,15 +16,9 @@ public class Main {
      */
 
     //DO YOU HAVE FILE WITH WORDS OF LEARNING LANGUAGE? Please add language name to set
-    public static Set languagesWithYourWords = new HashSet<>();
 
-    private static final String[] SET_VALUES = new String[] { "a", "b" };
-    public static final Set<String> MY_SET = new HashSet<String>(Arrays.asList(SET_VALUES));
 
-    public static String learningLang = "jpn";
-    public static String nativeLang = "eng";
-
-    String devDir = "src/development/files/";
+    private static String devDir = "src/development/files/";
 //    String devDir = "src/test/files/";
 
 
@@ -33,9 +27,28 @@ public class Main {
     /**
      * DO NO TOUCH!
      */
+
+    public static Integer superWordCounter = 1;//start position
+    private static File langWordsAll;
+    private static Map<String, File> yourWordsFiles = new HashMap<>();
+
+    public static String learningLang = "";
+    public static String nativeLang = "";
+
+    public static String[] languages = {"eng", "epo", "tur"};
+//    public static String[] languages = {"eng", "epo", "tur", "ita", "rus", "deu", "fra", "spa", "por", "jpn", "hun", "heb", "ber", "pol", "mkd", "fin", "nld", "cmn", "mar", "ukr", "swe", "dan", "srp", "bul", "ces", "ina", "lat", "ara", "nds", "lit", "pes", "tlh", "jbo", "ell", "nob", "tgl", "tat", "isl", "toki", "ron"};
+    private static boolean multiply = false;
+    private static boolean setWordId = false;
+
+
+
+
+
+
     public static String splitSpace = " ";//split inside sentence (jpn and cnm = "")
     public static String separator = "\t";//row separator
     public static int minWordLength = 1;//jpn and cnm = 1 !
+
 
     public static boolean checkJpnCnmLang() {
         return "jpn".equals(learningLang) || "cnm".equals(learningLang);
@@ -46,11 +59,100 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         Main main = new Main();
-        main.start();
+        main.menu();
+    }
+
+    private boolean yesNo(String line) {
+        boolean res = false;
+        if ("n".equals(line)){
+            res = false;
+        } else if ("y".equals(line)){
+            res = true;
+        }
+
+        return res;
+    }
+
+    private void menu() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Hello, please select options:");
+        System.out.println("Do yo want to create all languages db? (Y/N)");
+
+//        multiply = yesNo(br.readLine().toLowerCase()); TODO
+
+        multiply = true;
+
+
+        if (multiply) {
+            System.out.println("Do you have file with words for your language? (Y/N)");
+//            boolean answer = yesNo(br.readLine().toLowerCase()); TODO
+            boolean answer = false;
+            if (answer) {
+                System.out.println("Please enter lang and filepath like separated by comma : eng,D://engwords.txt,rus,C://files/rusW.txt");
+
+                String line = br.readLine();
+                String[] ar = line.split(",");
+                for (int i = 0; i < ar.length; i = i + 2) {
+
+                    if (!yourWordsFiles.containsKey(ar[i])) {
+                        setWordId = true;
+                        langWordsAll = new File(ar[i + 1]);
+                        yourWordsFiles.put(ar[i], langWordsAll);
+                    }else {
+                        setWordId = false;
+                    }
+
+                }
+            } else {
+                langWordsAll = new File(devDir +"wordsTmp/" + "wordsTmp.txt");
+            }
+
+            for (int i = 0; i < languages.length; i++) {
+
+                learningLang = languages[i];
+
+                for (int j = 0; j < languages.length; j++) {
+                    if (i != j) {
+                        nativeLang = languages[j];
+                        start();
+                        yourWordsFiles.put(learningLang, langWordsAll);
+                        System.out.println();
+                        System.out.println("******************* " + learningLang + nativeLang +" is done *******************");
+                        System.out.println();
+                    }
+                }
+            }
+
+
+        } else {
+            System.out.println("There are all languages");
+            System.out.println(Arrays.toString(languages));
+            System.out.println();
+            System.out.println("What is your learning language? (3 letters):");
+            learningLang = br.readLine();
+            System.out.println("What is your native language? (3 letters):");
+            nativeLang = br.readLine();
+            System.out.println("Do you have file with words for your language? (Y/N)");
+//            boolean answer  = yesNo(br.readLine().toLowerCase()); TODO
+            boolean answer  = true;
+
+            if (answer) {
+                System.out.println("Please enter path to file with words of learning language:");
+//                yourWordsFiles.put(learningLang, new File(br.readLine()); TODO
+                yourWordsFiles.put(learningLang, new File("/home/sadedv/Desktop/enwordsFiles/jpnWords.txt"));
+            }
+            System.out.println();
+
+            start();
+        }
+
     }
 
     private void start() throws IOException {
-        System.out.println("Wait a few minutes...");
+
+        System.out.println("Wait few minutes...");
+
+
         File sentencesWithAudioIn = new File(devDir + "/sentences_with_audio.csv");
         File sentences = new File(devDir + "/sentences.csv");
         File originalLinks = new File(devDir + "/links.csv");
@@ -64,7 +166,7 @@ public class Main {
         File rusSentences = new File(tmpDir + nativeLang + "Sentences.txt");
         File langWords = new File(tmpDir + learningLang + "Words.txt");
 
-        File langWordsAll = new File(devDir + learningLang + "WordsAll.txt");
+
 
         File engRusSentencesLinks = new File(devDir + "seeds_data/" + learningLang + nativeLang + "/" + "links.tsv");
         File wordSentenceLinks = new File(devDir + "seeds_data/" + learningLang + nativeLang + "/" + "word_sentence.tsv");
@@ -82,71 +184,70 @@ public class Main {
         first(sentences, rusLangSentencesTmp, nativeLang);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("first is ready " + duration + " sec");
+        System.out.println("first is done " + duration + " sec");
 
         startTime = System.nanoTime();
         second(engLangSentencesTmp, sentencesWithAudioIn, engSentencesWithAudioOut);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("second is ready " + duration + " sec");
+        System.out.println("second is done " + duration + " sec");
 
         startTime = System.nanoTime();
         third(engSentencesWithAudioOut, engSentencesWithAudioOutWithoutRepeat);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("third is ready " + duration + " sec");
+        System.out.println("third is done " + duration + " sec");
 
         startTime = System.nanoTime();
         fourth(engSentencesWithAudioOutWithoutRepeat, rusLangSentencesTmp, originalLinks, engRusSentencesLinks);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("fourth is ready " + duration + " sec");
+        System.out.println("fourth is done " + duration + " sec");
 
         startTime = System.nanoTime();
         fifth(engSentencesWithAudioOutWithoutRepeat, langWordsAll);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("fifth is ready " + duration + " sec");
+        System.out.println("fifth is done " + duration + " sec");
 
 
         startTime = System.nanoTime();
         sixth(langWordsAll, engSentencesWithAudioOutWithoutRepeat, engRusSentencesLinks, wordSentenceLinks);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("sixth is ready " + duration + " sec");
+        System.out.println("sixth is done " + duration + " sec");
 
         startTime = System.nanoTime();
         seventh(engSentencesWithAudioOutWithoutRepeat, rusLangSentencesTmp, wordSentenceLinks, engRusSentencesLinks, engSentences, rusSentences);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("seventh is ready " + duration + " sec");
+        System.out.println("seventh is done " + duration + " sec");
 
 
         startTime = System.nanoTime();
         eighth(engRusSentencesLinks, wordSentenceLinks, langWordsAll, langWords);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("eighth is ready " + duration + " sec");
+        System.out.println("eighth is done " + duration + " sec");
 
 
         startTime = System.nanoTime();
         ninth(engSentences, audioLinks);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("ninth is ready " + duration + " sec");
+        System.out.println("ninth is done " + duration + " sec");
 
         startTime = System.nanoTime();
         tenth(engSentences, rusSentences, uniteSentence);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("tenth is ready " + duration + " sec");
+        System.out.println("tenth is done " + duration + " sec");
 
         startTime = System.nanoTime();
         eleventh(langWordsAll, words);
         endTime = System.nanoTime();
         duration = (endTime - startTime) / l;
-        System.out.println("eleventh is ready " + duration + " sec");
-
+        System.out.println("eleventh is done " + duration + " sec");
     }
 
     /**
@@ -201,9 +302,12 @@ public class Main {
      * Word counting
      */
     private void fifth(File langSentences, File langWordsTmp) throws IOException {
-        if (!checkJpnCnmLang()) {
+        if (!yourWordsFiles.containsKey(learningLang)) {
             WordCount wordCount = new WordCount();
             wordCount.start(langSentences, langWordsTmp);
+        }else if (setWordId){
+            WordCount wordCount = new WordCount();
+            wordCount.setIdsOfYourWords(yourWordsFiles.get(learningLang), langWordsTmp);
         }
     }
 
@@ -240,9 +344,11 @@ public class Main {
     }
 
     private void makeDir(String devDir) {
+        File dir1 = new File(devDir + "/wordsTmp");
         File dir2 = new File(devDir + "/seeds_data");
         File dir3 = new File(devDir + "/seeds_data/" + learningLang + nativeLang);
         File dir4 = new File(devDir + "/seeds_data/" + learningLang + nativeLang + "/tmp");
+        dir1.mkdir();
         dir2.mkdir();
         dir3.mkdir();
         dir4.mkdir();

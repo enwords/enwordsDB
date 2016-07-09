@@ -60,7 +60,7 @@ public class WordCount extends Zero {
 
 //        try (PrintWriter printWriter = new PrintWriter(langWords);
         try (PrintWriter printWriter2 = new PrintWriter(langWordsTmp)) {
-            int idCount = 0;
+//            int idCount = 0;
             String sep = Main.separator;
             for (Object s : list) {
                 String[] wordAndCount = s.toString().split("=");
@@ -69,11 +69,35 @@ public class WordCount extends Zero {
                 if ("1".equals(count) || (word.length() <= 3 && Integer.parseInt(count) < 3)) {
                     break;
                 } else {
-                    idCount++;
+//                    idCount++;
 //                    printWriter.println(idCount + sep + word);
-                    printWriter2.println(idCount + sep + word + sep + count);
+                    if (!word.equals("")) {
+                        printWriter2.println(Main.superWordCounter + sep + word + sep + count);
+                        Main.superWordCounter++;
+                    }
                 }
             }
         }
+    }
+
+    public void setIdsOfYourWords(File input, File output) throws IOException {
+        List<String> list = fileToList(input);
+        List<String> res = new ArrayList<>();
+        Set<String> set = new LinkedHashSet<>();
+        set.addAll(list);
+
+        for (String word : set) {
+
+            res.add(Main.superWordCounter + Main.separator + word);
+            Main.superWordCounter++;
+        }
+
+//        for (String line : list) {
+//            String[] arr = parseLineLight(line);
+//            String word = arr[1];
+//            res.add(Main.superWordCounter + Main.separator + word);
+//            Main.superWordCounter++;
+//        }
+        collectionToFile(res, output);
     }
 }

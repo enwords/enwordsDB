@@ -30,7 +30,7 @@ public class Zero {
 //    }
 
     public String convertStringForTSV(String text) {
-        if (text.contains("\"")){
+        if (text.contains("\"")) {
             text = "\"" + text.replaceAll("\"", "\"\"") + "\"";
         }
 
@@ -148,15 +148,24 @@ public class Zero {
 //            }
 //        }
 
-
-        for (String word : words) {
-            if (((word.length() >= Main.minWordLength) || "i".equals(word)) && !word.startsWith("'")
-                    && (!"tom".equals(word) && !"mary".equals(word) && !"tatoeba".equals(word) && !"th".equals(word)
-                    && !word.startsWith("tom'") && !word.startsWith("mary'"))) {
-                set.add(word);
+        if ("eng".equals(Main.learningLang)) {
+            for (String word : words) {
+                if (((word.length() >= Main.minWordLength) || "i".equals(word)) && !word.startsWith("'")
+                        && (!"tom".equals(word) && !"mary".equals(word) && !"tatoeba".equals(word) && !"th".equals(word)
+                        && !word.startsWith("tom'") && !word.startsWith("mary'"))) {
+                    set.add(word);
+                }
             }
+            return set;
+        } else {
+            for (String word : words) {
+                if (!word.startsWith("'") && (!"tom".equals(word) && !"mary".equals(word) && !"tatoeba".equals(word)
+                        && !word.startsWith("tom'") && !word.startsWith("mary'"))) {
+                    set.add(word);
+                }
+            }
+            return set;
         }
-        return set;
     }
 
 
@@ -165,9 +174,7 @@ public class Zero {
 
         String res1 = word.replaceAll("[^'\\p{L}]+", Main.splitSpace).toLowerCase();
         String res2 = "";
-        if (!"eng".equals(Main.learningLang)) {
-            return res1;
-        } else {
+        if ("eng".equals(Main.learningLang)) {
             String[] arr = res1.split(Main.splitSpace);
             for (String s : arr) {
                 if (s.endsWith("'s") && !s.equals("let's")) {
@@ -179,12 +186,14 @@ public class Zero {
                 }
                 res2 += (Main.splitSpace + s);
             }
+        } else {
+            return res1;
         }
         return res2;
     }
 
     public static String replaceLast(String text, String regex, String replacement) {
-        return text.replaceFirst("(?s)"+regex+"(?!.*?"+regex+")", replacement);
+        return text.replaceFirst("(?s)" + regex + "(?!.*?" + regex + ")", replacement);
     }
 
 }

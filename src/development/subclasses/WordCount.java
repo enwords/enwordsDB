@@ -89,10 +89,18 @@ public class WordCount extends Zero {
         List<String> list = fileToList(input);
         List<String> res = new ArrayList<>();
         Set<String> set = new LinkedHashSet<>();
-        set.addAll(list);
+
+        for (String str : list) {
+            String word = str.split(" ")[0];
+            set.add(word);
+        }
 
         for (String line : set) {
-            res.add(Main.superWordCounter + Main.separator + line.split(" ")[0]);
+            res.add(Main.superWordCounter + Main.separator + line);
+            Main.superWordCounter++;
+        }
+
+        while ((Main.superWordCounter - 1) % Main.divider != 0) {
             Main.superWordCounter++;
         }
 

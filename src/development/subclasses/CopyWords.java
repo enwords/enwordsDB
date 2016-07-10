@@ -22,7 +22,9 @@ public class CopyWords extends Zero {
                 String id = arr[0];
                 String text = convertStringForTSV(arr[1]);
 
-                printWriter.println(id + Main.separator + Main.learningLang + Main.separator + text);
+                String res = id + Main.separator + Main.learningLang + Main.separator + text;
+                printWriter.println(res);
+                Main.allWords.add(res);
             }
         }
     }

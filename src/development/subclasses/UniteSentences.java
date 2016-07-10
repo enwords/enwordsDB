@@ -28,7 +28,10 @@ public class UniteSentences extends Zero {
                 String[] arr = line.split(Main.separator);
                 String id = arr[0];
                 String text = convertStringForTSV(arr[1]);
-                result.add(id + Main.separator + lang + Main.separator + text);
+
+                String res = id + Main.separator + lang + Main.separator + text;
+                result.add(res);
+                Main.allSen.add(res);
             }
         }
         return result;

@@ -170,7 +170,11 @@ public class MakeFileOfWordSentenceLinks extends Zero {
                     if (count > 100) {
                         break;
                     } else {
-                        printWriter.println(wordId + Main.separator + sentId);
+                        String res = wordId + Main.separator + sentId;
+                        printWriter.println(res);
+
+                        Main.allWordSenLinks.add(res);
+
                         count++;
                     }
                 }

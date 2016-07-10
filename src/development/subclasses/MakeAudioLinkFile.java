@@ -1,5 +1,7 @@
 package development.subclasses;
 
+import development.Main;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -25,7 +27,10 @@ public class MakeAudioLinkFile extends Zero {
                 String[] arr = parseLineLight(line);
 
                 if ("true".equals(arr[2])) {
-                    result.add(Integer.parseInt(arr[param]));
+
+                    Integer res = Integer.parseInt(arr[param]);
+                    result.add(res);
+                    Main.allAudio.add(res);
                 }
             }
         }

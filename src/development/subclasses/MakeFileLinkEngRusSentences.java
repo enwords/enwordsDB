@@ -1,5 +1,7 @@
 package development.subclasses;
 
+import development.Main;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -33,6 +35,7 @@ public class MakeFileLinkEngRusSentences extends Zero {
                 if (engSet.contains(engSenId) && rusSet.contains(parsedString[1])) {
                     result.add(line);
                     engSet.remove(engSenId);
+                    Main.allLinks.add(line);
                 }
             }
         }

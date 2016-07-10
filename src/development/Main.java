@@ -37,10 +37,9 @@ public class Main {
     public static String learningLang = "";
     public static String nativeLang = "";
 
-    public static String[] languages = {"eng", "epo", "jpn"};
+    public static String[] languages = {"eng", "rus", "jpn"};
     //    public static String[] languages = {"eng", "epo", "tur", "ita", "rus", "deu", "fra", "spa", "por", "jpn", "hun", "heb", "ber", "pol", "mkd", "fin", "nld", "cmn", "mar", "ukr", "swe", "dan", "srp", "bul", "ces", "ina", "lat", "ara", "nds", "lit", "pes", "tlh", "jbo", "ell", "nob", "tgl", "tat", "isl", "toki", "ron"};
     private static boolean multiply = false;
-    private static boolean setWordId = false;
 
 
     public static Set<String> allWords = new LinkedHashSet<>();
@@ -81,9 +80,7 @@ public class Main {
     private void menu() throws IOException {
 
         long startTime, endTime, duration;
-
-        long l = 16666667;
-        startTime = System.nanoTime();
+        startTime = System.currentTimeMillis();
 
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -100,7 +97,6 @@ public class Main {
 //            boolean answer = yesNo(br.readLine().toLowerCase()); TODO
             boolean answer = true;
             if (answer) {
-                System.out.println("Please enter lang and filepath like separated by comma : eng,D://engwords.txt,rus,C://files/rusW.txt");
 
 
 //                String line = br.readLine(); TODO
@@ -142,8 +138,8 @@ public class Main {
             start();
         }
 
-        endTime = System.nanoTime();
-        duration = (endTime - startTime) / l;
+        endTime = System.currentTimeMillis();
+        duration = (endTime - startTime);
         System.out.println("complete time is  " + duration + " min");
 
     }
@@ -349,6 +345,7 @@ public class Main {
         } else if (!mapSetId.containsKey(learningLang) && !dontSetId.contains(learningLang)) {
             WordCount wordCount = new WordCount();
             wordCount.start(langSentences, langWordsTmp);
+            dontSetId.add(learningLang);
         }
     }
 

@@ -17,6 +17,11 @@ public class WordCount extends Zero {
 
         writeToFile(listOfWords, langWordsTmp);
 
+        while ((Main.superWordCounter - 1) % Main.divider != 0) {
+            Main.superWordCounter++;
+        }
+
+
     }
 
     public List<String> wordCount(List<String> list) throws IOException {
@@ -86,18 +91,11 @@ public class WordCount extends Zero {
         Set<String> set = new LinkedHashSet<>();
         set.addAll(list);
 
-        for (String word : set) {
-
-            res.add(Main.superWordCounter + Main.separator + word);
+        for (String line : set) {
+            res.add(Main.superWordCounter + Main.separator + line.split(" ")[0]);
             Main.superWordCounter++;
         }
 
-//        for (String line : list) {
-//            String[] arr = parseLineLight(line);
-//            String word = arr[1];
-//            res.add(Main.superWordCounter + Main.separator + word);
-//            Main.superWordCounter++;
-//        }
         collectionToFile(res, output);
     }
 }

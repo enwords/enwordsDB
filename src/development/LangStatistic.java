@@ -16,20 +16,14 @@ public class LangStatistic {
     }
 
     private void start() throws IOException {
-//      Map<String, String> map = fileToMap(new File("src/development/files/tmp/eee"));
-      Map<String, String> map = fileToMap(new File("src/development/files/sentences.csv"));
+        Map<String, String> map = fileToMap(new File("src/development/files/sentences.csv"));
 
-
-
-        for (Map.Entry<String, String> pair : map.entrySet()) {
-            System.out.println(pair.getKey() +": " + pair.getValue());
+        for (Map.Entry<String, Integer> pair : entriesSortedByValues(counter)) {
+            System.out.println(pair.getKey() + " " + map.get(pair.getKey()) + " " + pair.getValue());
         }
 
         System.out.println();
         String s = entriesSortedByValues(counter).toString();
-
-        System.out.println(s.replaceAll(", ", "\n").replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("=", "\t"));
-        System.out.println();
         System.out.println(s.replaceAll("\\d+", "").replaceAll("\\[", "\'").replaceAll("\\]", "").replaceAll("\\=", "\'").replaceAll(" ", " '"));
     }
 
@@ -54,21 +48,18 @@ public class LangStatistic {
 
                     if (counter.containsKey(lang)) {
                         counter.put(lang, counter.get(lang) + 1);
-                    } else{
+                    } else {
                         counter.put(lang, 1);
                     }
                 } catch (ArrayIndexOutOfBoundsException s) {
                     System.out.println("err");
                 }
-
-
             }
         }
         return result;
     }
 
-    static
-    List<Map.Entry<String, Integer>> entriesSortedByValues(Map<String, Integer> map) {
+    static List<Map.Entry<String, Integer>> entriesSortedByValues(Map<String, Integer> map) {
 
         List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
 

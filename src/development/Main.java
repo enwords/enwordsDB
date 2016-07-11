@@ -19,6 +19,8 @@ public class Main {
 
 
     private static String devDir = "src/development/files/";
+    private static String pathToLangs = "D:\\Users\\Sade\\Desktop\\enwordsFiles\\langs\\current\\";
+
 //    String devDir = "src/test/files/";
 
 
@@ -37,7 +39,7 @@ public class Main {
     public static String learningLang = "";
     public static String nativeLang = "";
 
-    public static String[] languages = {"eng", "rus", "jpn"};
+    public static String[] languages = {"eng", "rus", "jpn", "cmn", "ara"};
     //    public static String[] languages = {"eng", "epo", "tur", "ita", "rus", "deu", "fra", "spa", "por", "jpn", "hun", "heb", "ber", "pol", "mkd", "fin", "nld", "cmn", "mar", "ukr", "swe", "dan", "srp", "bul", "ces", "ina", "lat", "ara", "nds", "lit", "pes", "tlh", "jbo", "ell", "nob", "tgl", "tat", "isl", "toki", "ron"};
     private static boolean multiply = false;
 
@@ -49,13 +51,14 @@ public class Main {
     public static Set<Integer> allAudio = new LinkedHashSet<>();
 
 
-    public static String splitSpace = " ";//split inside sentence (jpn and cnm = "")
+    public static String splitSpace = " ";//split inside sentence (jpn and cmn = "")
     public static String separator = "\t";//row separator
-    public static int minWordLength = 1;//jpn and cnm = 1 !
+    public static int minWordLength = 1;//jpn and cmn = 1 !
 
+    public static boolean wordWriteFlag = true;
 
-    public static boolean checkJpnCnmLang() {
-        return "jpn".equals(learningLang) || "cnm".equals(learningLang);
+    public static boolean checkJpnCmnLang() {
+        return "jpn".equals(learningLang) || "cmn".equals(learningLang);
     }
 
     /******/
@@ -79,9 +82,10 @@ public class Main {
 
     private void menu() throws IOException {
 
-        long startTime, endTime, duration;
-        startTime = System.currentTimeMillis();
 
+        long startTime, endTime, duration;
+        long l = 60000000000L;
+        startTime = System.nanoTime();
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Hello, please select options:");
@@ -102,7 +106,7 @@ public class Main {
 //                String line = br.readLine(); TODO
                 for (int i = 0; i < languages.length; i++) {
 
-                    String path = "/home/sadedv/Desktop/enwordsFiles/langs/T/" + languages[i] + ".txt";
+                    String path = pathToLangs + languages[i] + ".txt";
 
                     File file = new File(path);
                     if (file.exists() && !file.isDirectory()) {
@@ -138,15 +142,17 @@ public class Main {
             start();
         }
 
-        endTime = System.currentTimeMillis();
-        duration = (endTime - startTime);
+
+
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / l;
         System.out.println("complete time is  " + duration + " min");
 
     }
 
     private void startSearch() throws IOException {
         for (int i = 0; i < languages.length; i++) {
-
+            wordWriteFlag = true;
             learningLang = languages[i];
 
             for (int j = 0; j < languages.length; j++) {
@@ -158,6 +164,7 @@ public class Main {
                     System.out.println("******************* " + learningLang + "-" + nativeLang + " is done *******************");
                     System.out.println();
                 }
+                wordWriteFlag = false;
             }
         }
 

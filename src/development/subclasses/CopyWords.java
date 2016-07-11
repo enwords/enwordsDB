@@ -20,11 +20,14 @@ public class CopyWords extends Zero {
                 String[] arr = sentence.split(Main.separator);
 
                 String id = arr[0];
-                String text = convertStringForTSV(arr[1]);
+//                String text = convertStringForTSV(arr[1]);
+                String text = arr[1];
 
                 String res = id + Main.separator + Main.learningLang + Main.separator + text;
                 printWriter.println(res);
-                Main.allWords.add(res);
+                if (Main.wordWriteFlag) {
+                    Main.allWords.add(res);
+                }
             }
         }
     }

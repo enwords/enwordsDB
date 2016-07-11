@@ -62,10 +62,7 @@ public class WordCount extends Zero {
 
 
     public void writeToFile(List<String> list, File langWordsTmp) throws IOException {
-
-//        try (PrintWriter printWriter = new PrintWriter(langWords);
         try (PrintWriter printWriter2 = new PrintWriter(langWordsTmp)) {
-//            int idCount = 0;
             String sep = Main.separator;
             for (Object s : list) {
                 String[] wordAndCount = s.toString().split("=");
@@ -74,9 +71,7 @@ public class WordCount extends Zero {
                 if ("1".equals(count) || (word.length() <= 3 && Integer.parseInt(count) < 3)) {
                     break;
                 } else {
-//                    idCount++;
-//                    printWriter.println(idCount + sep + word);
-                    if (!word.equals("")) {
+                    if (!"".equals(word)) {
                         printWriter2.println(Main.superWordCounter + sep + word + sep + count);
                         Main.superWordCounter++;
                     }
@@ -91,13 +86,23 @@ public class WordCount extends Zero {
         Set<String> set = new LinkedHashSet<>();
 
         for (String str : list) {
-            String word = str.split(" ")[0];
+            String word = str.split(" ")[0].replaceAll("[0-9]", "");
+
+            if ("jpn".equals(Main.learningLang) || "cmn".equals(Main.learningLang)
+                    || "ara".equals(Main.learningLang)) {
+                word = word.replaceAll("[а-яА-Яa-zA-Z]", "");
+            }
             set.add(word);
         }
 
+        set.remove("");
+
         for (String line : set) {
-            res.add(Main.superWordCounter + Main.separator + line);
-            Main.superWordCounter++;
+
+
+                res.add(Main.superWordCounter + Main.separator + line);
+                Main.superWordCounter++;
+
         }
 
         while ((Main.superWordCounter - 1) % Main.divider != 0) {

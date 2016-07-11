@@ -89,7 +89,7 @@ public class MakeFileOfWordSentenceLinks extends Zero {
             bool = arr[3];
             localMap = new HashMap<>();
 
-            if (!Main.checkJpnCnmLang()) {
+            if (!Main.checkJpnCmnLang()) {
                 words = removePunctuationAndDigits(text).split(Main.splitSpace);
 
                 for (String word : words) {

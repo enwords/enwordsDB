@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GiveJpnCnmWordsId extends Zero {
+public class GiveJpnCmnWordsId extends Zero {
     public static void main(String[] args) throws IOException {
 
-        GiveJpnCnmWordsId x = new GiveJpnCnmWordsId();
+        GiveJpnCmnWordsId x = new GiveJpnCmnWordsId();
         x.tmp();
 
     }

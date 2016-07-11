@@ -7,28 +7,6 @@ import java.util.*;
 
 public class Zero {
 
-//    public static void main(String[] args) throws IOException {
-//
-//        Zero x = new Zero();
-//        x.tmp();
-//
-//    }
-//
-//    public void tmp() throws IOException {
-//        File jpnWords = new File("/home/sadedv/Documents/repo/jpnWords");
-//        List<String> l = fileToList(jpnWords);
-//        List<String> l2 = new ArrayList<>();
-//
-//        int count = 1;
-//        for (String s : l) {
-//            l2.add(count + "\t" + s);
-//            count++;
-//        }
-//
-//
-//        listToFile(l2, new File("/home/sadedv/Documents/repo/jpnWordsTmp"));
-//    }
-
     public String convertStringForTSV(String text) {
         if (text.contains("\"")) {
             text = "\"" + text.replaceAll("\"", "\"\"") + "\"";

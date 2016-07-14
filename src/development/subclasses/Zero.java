@@ -118,20 +118,17 @@ public class Zero {
     public Set<String> conditions(String[] words) {
         Set<String> set = new HashSet<>();
 
-//        for (String word : words) {
-//            if (((word.length() > 1) || "i".equals(word)) && !word.startsWith("'")
-//                    && (!"the".equals(word) && !"tom".equals(word) && !"mary".equals(word)
-//                    && !word.startsWith("tom'") && !word.startsWith("mary'"))) {
-//                set.add(word);
-//            }
-//        }
-
         if ("eng".equals(Main.learningLang)) {
             for (String word : words) {
                 if (((word.length() >= Main.minWordLength) || "i".equals(word)) && !word.startsWith("'")
                         && (!"tom".equals(word) && !"mary".equals(word) && !"tatoeba".equals(word) && !"th".equals(word)
                         && !word.startsWith("tom'") && !word.startsWith("mary'"))) {
-                    set.add(word);
+
+                    if (word.length() <= 20) {
+                        if (set.size() < Main.divider) {
+                            set.add(word);
+                        } else break;
+                    }
                 }
             }
             return set;
@@ -139,7 +136,11 @@ public class Zero {
             for (String word : words) {
                 if (!word.startsWith("'") && (!"tom".equals(word) && !"mary".equals(word) && !"tatoeba".equals(word)
                         && !word.startsWith("tom'") && !word.startsWith("mary'"))) {
-                    set.add(word);
+                    if (word.length() <= 20) {
+                        if (set.size() < Main.divider) {
+                            set.add(word);
+                        } else break;
+                    }
                 }
             }
             return set;

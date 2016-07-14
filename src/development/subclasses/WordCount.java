@@ -92,16 +92,21 @@ public class WordCount extends Zero {
                     || "ara".equals(Main.learningLang)) {
                 word = word.replaceAll("[а-яА-Яa-zA-Z]", "");
             }
-            set.add(word);
+            if (word.length() <= 20) {
+                if (set.size() < Main.divider) {
+                    set.add(word);
+                } else break;
+            }
         }
 
         set.remove("");
 
+
         for (String line : set) {
 
 
-                res.add(Main.superWordCounter + Main.separator + line);
-                Main.superWordCounter++;
+            res.add(Main.superWordCounter + Main.separator + line);
+            Main.superWordCounter++;
 
         }
 

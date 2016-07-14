@@ -163,8 +163,8 @@ public class Main {
                     System.out.println();
                     System.out.println("******************* " + learningLang + "-" + nativeLang + " is done *******************");
                     System.out.println();
+                    wordWriteFlag = false;
                 }
-                wordWriteFlag = false;
             }
         }
 

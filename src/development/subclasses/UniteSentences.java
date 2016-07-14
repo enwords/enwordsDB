@@ -27,8 +27,8 @@ public class UniteSentences extends Zero {
                 line = fileReader.readLine();
                 String[] arr = line.split(Main.separator);
                 String id = arr[0];
-//                String text = convertStringForTSV(arr[1]);
-                String text = arr[1];
+                String text = convertStringForTSV(arr[1]);
+//                String text = arr[1];
 
                 String res = id + Main.separator + lang + Main.separator + text;
                 result.add(res);

@@ -12,9 +12,9 @@ public class Zero {
             text = "\"" + text.replaceAll("\"", "\"\"") + "\"";
         }
 
-        if (text.contains("\'")) {
-            text = text.replaceAll("\'", "\'\'");
-        }
+//        if (text.contains("\'")) {
+//            text = text.replaceAll("\'", "\'\'");
+//        }
         return text;
     }
 
